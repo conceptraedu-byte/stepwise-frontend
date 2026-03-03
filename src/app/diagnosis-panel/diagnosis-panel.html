@@ -1,0 +1,55 @@
+<section class="diagnosis-panel">
+
+  <header class="diagnosis-header">
+    <h2>Step 1 — Identify the gap</h2>
+    <p>
+      Choose the option that best describes where you are stuck.
+      This step is required before the system can teach you.
+    </p>
+  </header>
+
+  <div class="diagnosis-options">
+
+    <button
+      class="diagnosis-option primary"
+      (click)="select('concept')">
+      <span class="title">Conceptual gap</span>
+      <span class="desc">
+        I don’t understand the core idea or reasoning
+      </span>
+    </button>
+
+    <button
+      class="diagnosis-option"
+      (click)="select('formula')">
+      <span class="title">Formula gap</span>
+      <span class="desc">
+        I know the idea, but formulas confuse me
+      </span>
+    </button>
+
+    <button
+      class="diagnosis-option"
+      (click)="select('application')">
+      <span class="title">Application gap</span>
+      <span class="desc">
+        I understand concepts but get stuck while solving questions
+      </span>
+    </button>
+
+    <button
+      class="diagnosis-option muted"
+      (click)="select('unknown')">
+      <span class="title">Unclear gap</span>
+      <span class="desc">
+        I’m not sure exactly where I’m stuck
+      </span>
+    </button>
+
+  </div>
+
+  <footer class="diagnosis-footer">
+    Diagnosis is mandatory. Teaching begins only after this step.
+  </footer>
+
+</section>

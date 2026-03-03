@@ -1,0 +1,30 @@
+<div class="chat-input">
+
+  <div class="input-shell" [class.disabled]="disabled">
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      (keydown.enter)="onSend()"
+      [placeholder]="
+        disabled
+          ? 'Choose a starting point above to begin'
+          : 'Type what feels unclear…'
+      "
+      [disabled]="disabled"
+      aria-label="Chat input"
+    />
+
+    <button
+      type="button"
+      class="send-btn"
+      (click)="onSend()"
+      [disabled]="disabled || !userInput.trim()">
+      →
+    </button>
+  </div>
+
+  <div class="input-hint" *ngIf="!disabled">
+    Press <strong>Enter</strong> to send • Be informal — clarity comes later
+  </div>
+
+</div>

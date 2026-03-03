@@ -1,0 +1,379 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================= */
+/* GLOBAL DARK FOUNDATION */
+/* ============================================= */
+
+.mock-workspace {
+  min-height: 100vh;
+  background: radial-gradient(circle at 30% 20%, #111827, #0b1220 60%, #070b14 100%);
+  font-family: 'Inter', sans-serif;
+  color: #e5e7eb;
+}
+
+.mock-container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+/* ============================================= */
+/* CONFIG */
+/* ============================================= */
+
+.config-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.config-left {
+  padding: 64px;
+  background: linear-gradient(160deg, #0f172a, #111827);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.brand-logo {
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #818cf8;
+}
+
+.brand-tag {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.hero-copy h1 {
+  font-family: 'Plus Jakarta Sans';
+  font-size: 44px;
+  font-weight: 800;
+}
+
+.accent {
+  color: #6366f1;
+}
+
+.hero-copy p {
+  color: #94a3b8;
+  margin-top: 10px;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.config-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0b1220;
+}
+
+.form-card {
+  background: #111827;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid rgba(148,163,184,0.08);
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.form-card-head h2 {
+  font-family: 'Plus Jakarta Sans';
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.form-card-head p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.field-group {
+  margin-bottom: 18px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+label {
+  font-size: 12px;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 8px;
+  color: #e5e7eb;
+}
+
+select:focus,
+input:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+}
+
+.start-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ============================================= */
+/* EXAM */
+/* ============================================= */
+
+.exam-page {
+  background: #0b1220;
+  min-height: 100vh;
+}
+
+.exam-topbar {
+  padding: 16px 32px;
+  background: rgba(17,24,39,0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(148,163,184,0.08);
+}
+
+.tb-brand {
+  font-weight: 700;
+  color: #818cf8;
+}
+
+.tb-subject {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.progress-track {
+  width: 220px;
+  height: 8px;
+  background: #1e293b;
+  border-radius: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6366f1;
+}
+
+.timer {
+  background: #111827;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+/* Layout */
+
+.exam-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 32px;
+}
+
+.sidebar {
+  background: #111827;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.q-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.q-btn {
+  width: 36px;
+  height: 36px;
+  background: #1e293b;
+  border: none;
+  color: #94a3b8;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.q-btn.active {
+  background: #6366f1;
+  color: white;
+}
+
+.q-btn.answered {
+  background: #065f46;
+  color: #10b981;
+}
+
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.question-card {
+  background: #111827;
+  padding: 32px;
+  border-radius: 16px;
+}
+
+.question-header {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.question-text {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #1e293b;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #e5e7eb;
+}
+
+.option:hover {
+  border-color: #6366f1;
+}
+
+.option.selected {
+  border-color: #6366f1;
+  background: #1e1b4b;
+}
+
+.opt-letter {
+  background: #0f172a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.nav-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-controls button {
+  padding: 10px 20px;
+  background: #1e293b;
+  border: none;
+  border-radius: 8px;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+/* ============================================= */
+/* RESULTS */
+/* ============================================= */
+
+.results-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+.result-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.acc-value {
+  font-size: 60px;
+  font-weight: 800;
+  color: #6366f1;
+}
+
+.acc-label {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: #111827;
+  padding: 24px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.res-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.res-actions button {
+  padding: 12px 28px;
+  background: #1e293b;
+  border: none;
+  border-radius: 8px;
+  color: #e5e7eb;
+  cursor: pointer;
+}

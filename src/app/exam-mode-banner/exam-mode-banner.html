@@ -1,0 +1,28 @@
+<!-- @if (mode) {
+
+  <div class="banner">
+
+    <div class="left">
+      <span class="label">Mode:</span>
+      <span class="value">
+        {{ mode === 'mock' ? 'Mock Test' : 
+           mode === 'practice' ? 'Practice' : 
+           'Learning' }}
+      </span>
+    </div>
+
+    @if (mode === 'mock') {
+      <div class="center">
+        Question {{ currentQuestion }} / {{ totalQuestions }}
+      </div>
+
+      @if (score !== null) {
+        <div class="right">
+          Score: {{ score }}
+        </div>
+      }
+    }
+
+  </div>
+
+} -->

@@ -1,0 +1,59 @@
+<div class="chat-container">
+
+  <!-- CHAT HEADER -->
+  <header class="chat-header">
+    <div class="title">
+      <h3>Socratic Tutor</h3>
+      <span>Learn by thinking, not memorizing</span>
+    </div>
+
+    <div class="mode-indicator" *ngIf="isSocraticMode">
+      Step {{ currentStep }} / {{ totalSteps }}
+    </div>
+  </header>
+
+  <!-- CHAT BODY -->
+  <section class="chat-body" #chatBody>
+
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [class.user]="msg.role === 'user'"
+      [class.bot]="msg.role === 'bot'">
+
+      <div class="bubble">
+        {{ msg.text }}
+      </div>
+    </div>
+
+    <!-- STREAMING STATE -->
+    <div *ngIf="isBotThinking" class="thinking-row">
+      <span class="cursor">▍</span>
+      <button class="stop-btn" (click)="stopGeneration()">Stop</button>
+    </div>
+
+  </section>
+
+  <!-- TUTOR ACTIONS -->
+  <div class="tutor-actions" *ngIf="isSocraticMode && !isBotThinking">
+    <button class="ghost-btn" (click)="requestHint()">Hint</button>
+    <button class="ghost-btn primary" (click)="explainStep()">
+      Explain this step
+    </button>
+  </div>
+
+  <!-- INPUT -->
+  <footer class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      (keydown.enter)="sendMessage()"
+      placeholder="Ask a concept. Be precise."
+      [disabled]="isBotThinking"
+    />
+    <button (click)="sendMessage()" [disabled]="isBotThinking">
+      Send
+    </button>
+  </footer>
+
+</div>

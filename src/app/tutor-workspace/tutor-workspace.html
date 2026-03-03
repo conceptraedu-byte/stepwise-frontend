@@ -1,0 +1,178 @@
+<div class="app-shell">
+
+  <!-- ===================================================== -->
+  <!-- TOP NAVIGATION BAR -->
+  <!-- ===================================================== -->
+  <header class="top-nav">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      Tutor Intelligence
+    </div>
+
+    <div class="mode-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="mode === 'structured'"
+        (click)="switchToStructured()">
+        Structured
+      </button>
+
+      <button
+        class="tab-btn"
+        [class.active]="mode === 'chat'"
+        (click)="switchToChat()">
+        Chat
+      </button>
+
+      <button
+        class="tab-btn"
+        [class.active]="mode === 'practice'"
+        (click)="switchToPractice()">
+        Practice
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================================================== -->
+  <!-- MAIN LAYOUT GRID -->
+  <!-- ===================================================== -->
+  <div class="layout-grid">
+
+    <!-- ================= LEFT PRIMARY ZONE ================= -->
+    <main class="primary-zone">
+
+      <app-exam-mode-banner
+        [mode]="currentMode"
+        [currentQuestion]="mockCurrent + 1"
+        [totalQuestions]="mockTotal"
+        [score]="mockScore">
+      </app-exam-mode-banner>
+
+      <div class="content-card fade-in">
+
+        <!-- ================= STRUCTURED MODE ================= -->
+        @if (mode === 'structured') {
+
+          @if (phase === 'diagnose') {
+            <diagnosis-panel
+              (diagnosisSelected)="onDiagnosisSelected($event)">
+            </diagnosis-panel>
+          }
+
+          @else if (phase === 'learn') {
+            <learn-entry-panel
+              [diagnosis]="diagnosisType!"
+              (clarified)="onClarified($event)">
+            </learn-entry-panel>
+          }
+
+          @else if (phase === 'verify') {
+            <verification-panel
+              [diagnosis]="diagnosisType!"
+              (verified)="onVerified($event)">
+            </verification-panel>
+          }
+
+          @else if (phase === 'adaptive') {
+
+            <adaptive-explanation
+              [data]="structuredExplanation"
+              [currentDepth]="teachingDepth"
+              (difficultyChange)="changeDifficulty($event)"
+              (simplify)="explainSimpler()"
+              (practice)="switchToPractice()"
+              (chat)="switchToChat()">
+            </adaptive-explanation>
+
+            <div class="action-row">
+              <button class="btn secondary" (click)="switchToChat(true)">Continue Discussion</button>
+              <button class="btn primary" (click)="switchToPractice(true)">Practice This Topic</button>
+              <button class="btn ghost" (click)="askNewQuestion()">New Question</button>
+              <button class="btn ghost" (click)="switchToStructured()">Start New Topic</button>
+            </div>
+
+          }
+        }
+
+        <!-- ================= CHAT MODE ================= -->
+        @if (mode === 'chat') {
+
+          <div class="chat-wrapper">
+            <app-chat-area
+              [diagnosis]="diagnosisType"
+              [practiceMode]="false"
+              (modeChanged)="updateMode($event)">
+            </app-chat-area>
+          </div>
+
+          <div class="action-row">
+            <button class="btn secondary" (click)="switchToStructured()">Structured</button>
+            <button class="btn primary" (click)="switchToPractice()">Practice</button>
+            <button class="btn ghost" (click)="askNewQuestion()">New Question</button>
+          </div>
+        }
+
+        <!-- ================= PRACTICE MODE ================= -->
+        @if (mode === 'practice') {
+
+          <apply-intake-panel
+            (submitted)="startApply($event)">
+          </apply-intake-panel>
+
+          @if (applyStarted) {
+            <div class="chat-wrapper">
+              <app-chat-area
+                [initialQuestion]="initialQuestion"
+                [diagnosis]="diagnosisType"
+                [practiceMode]="true">
+              </app-chat-area>
+            </div>
+          }
+
+          <div class="action-row">
+            <button class="btn ghost" (click)="switchToChat()">Back to Chat</button>
+            <button class="btn secondary" (click)="switchToStructured()">Structured</button>
+          </div>
+        }
+
+      </div>
+    </main>
+
+    <!-- ================= RIGHT INTELLIGENCE PANEL ================= -->
+    @if (structuredExplanation) {
+
+      <aside class="insight-panel">
+
+        <div class="insight-card">
+          <div class="insight-title">Active Topic</div>
+          <div class="insight-value">
+            {{ structuredExplanation?.definition ? 'In Progress' : '—' }}
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-title">Confidence Level</div>
+          <div class="confidence-wrapper">
+            <div class="confidence-percentage">
+              {{ (confidenceScore * 100) | number:'1.0-0' }}%
+            </div>
+            <div class="confidence-track">
+              <div class="confidence-fill"
+                   [style.width.%]="confidenceScore * 100">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-card subtle">
+          <div class="insight-title">Teaching Depth</div>
+          <div class="depth-pill">
+            {{ teachingDepth | uppercase }}
+          </div>
+        </div>
+
+      </aside>
+    }
+
+  </div>
+</div>

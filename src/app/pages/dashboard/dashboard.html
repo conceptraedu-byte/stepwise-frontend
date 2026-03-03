@@ -1,0 +1,152 @@
+<div class="dashboard-wrapper">
+
+  <!-- ── TOPBAR ────────────────────────────────────────── -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="product-label">TutorBot</div>
+      <h1>My Dashboard</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="streak-pill">
+        <span class="flame">🔥</span> {{ streakDays }}-day streak
+      </div>
+      <div class="avatar">{{ userInitials }}</div>
+    </div>
+  </div>
+
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <div class="hero-section">
+    <div class="hero-meta">
+      <div class="hero-tag">
+        <span class="hero-dot"></span>Performance Overview
+      </div>
+      <h2>{{ heroHeading }}</h2>
+      <div class="status-badge" [ngClass]="statusClass">
+        <span class="pulse-dot"></span>
+        {{ statusMessage }}
+      </div>
+    </div>
+
+    <!-- SVG Radial Ring -->
+    <div class="score-wrap">
+      <div class="radial-ring">
+        <svg viewBox="0 0 120 120" width="120" height="120">
+          <defs>
+            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#00e5a0"/>
+              <stop offset="100%" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg"   cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50"
+                  [style.stroke-dashoffset]="ringOffset"/>
+        </svg>
+        <div class="score-label">
+          <span class="score-num">{{ averageAccuracy }}</span>
+          <span class="score-unit">% avg</span>
+        </div>
+      </div>
+      <p class="score-caption">Overall Accuracy</p>
+    </div>
+  </div>
+
+  <!-- ── KPI GRID ───────────────────────────────────────── -->
+  <div class="kpi-grid">
+
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon">📝</div>
+      <div class="kpi-title">Total Tests</div>
+      <div class="kpi-value">{{ totalTests }}</div>
+      <div class="kpi-sub">+{{ testsThisWeek }} this week</div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon">🏆</div>
+      <div class="kpi-title">Best Score</div>
+      <div class="kpi-value">{{ bestScore }}%</div>
+      <div class="kpi-sub">{{ bestScoreContext }}</div>
+    </div>
+
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-icon">📌</div>
+      <div class="kpi-title">Last Score</div>
+      <div class="kpi-value">{{ lastScore }}%</div>
+      <div class="kpi-sub">{{ lastScoreContext }}</div>
+    </div>
+
+    <div class="kpi-card kpi-red">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-title">Improvement</div>
+      <div class="kpi-value"
+           [class.positive]="improvementRate > 0"
+           [class.negative]="improvementRate < 0">
+        {{ improvementRate > 0 ? '+' : '' }}{{ improvementRate }}%
+      </div>
+      <div class="kpi-sub">vs last 5 tests</div>
+    </div>
+
+  </div>
+
+  <!-- ── ACCURACY TREND ─────────────────────────────────── -->
+  <div class="card-block">
+    <div class="block-header">
+      <h3>Accuracy Trend</h3>
+      <div class="block-badge">Last {{ accuracyHistory.length }} Tests</div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="accuracyHistory.length === 0" class="empty-state">
+      <div class="empty-icon">📊</div>
+      <p>No test history yet — complete a test to see your trend.</p>
+    </div>
+
+    <!-- Chart -->
+    <div *ngIf="accuracyHistory.length > 0" class="trend-chart">
+      <div *ngFor="let acc of accuracyHistory; let i = index" class="bar-wrap">
+        <div class="trend-bar"
+             [class.bar-low]="acc < 50"
+             [class.bar-mid]="acc >= 50 && acc < 70"
+             [class.bar-high]="acc >= 70"
+             [style.height.%]="barHeight(acc)"
+             [attr.data-val]="acc + '%'">
+        </div>
+        <div class="bar-label">T-{{ accuracyHistory.length - i }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOPIC MASTERY ──────────────────────────────────── -->
+  <div class="card-block">
+    <div class="block-header">
+      <h3>Topic Mastery</h3>
+      <div class="block-badge">Performance Distribution</div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="masteryKeys.length === 0" class="empty-state">
+      <div class="empty-icon">📚</div>
+      <p>No topic data yet — complete a test to see your mastery breakdown.</p>
+    </div>
+
+    <!-- Mastery rows -->
+    <div *ngFor="let topic of masteryKeys" class="topic-row">
+      <div class="topic-label">{{ topic }}</div>
+      <div class="topic-progress">
+        <div class="topic-fill"
+             [style.width.%]="topicMastery[topic]"
+             [class.weak]="topicMastery[topic] < 40"
+             [class.medium]="topicMastery[topic] >= 40 && topicMastery[topic] < 70"
+             [class.strong]="topicMastery[topic] >= 70">
+        </div>
+      </div>
+      <div class="topic-percent"
+           [class.weak-text]="topicMastery[topic] < 40"
+           [class.medium-text]="topicMastery[topic] >= 40 && topicMastery[topic] < 70"
+           [class.strong-text]="topicMastery[topic] >= 70">
+        {{ topicMastery[topic] }}%
+      </div>
+    </div>
+
+  </div>
+
+</div>

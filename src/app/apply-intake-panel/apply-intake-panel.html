@@ -1,0 +1,54 @@
+<section class="apply-intake-shell">
+
+  <div class="apply-intake-card">
+
+    <!-- SYSTEM HEADER -->
+    <div class="apply-system-bar">
+      <span class="system-badge">AI PRACTICE LAB</span>
+      <span class="system-mode">Mode: Exam Simulation</span>
+    </div>
+
+    <div class="apply-header">
+      <h2>Practice & Application</h2>
+      <p class="apply-subtext">
+        Enter a full exam-style question. You will attempt it independently
+        before structured evaluation is generated.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- INPUT ZONE -->
+    <div class="apply-input-group">
+
+      <label>Exam Question Input</label>
+
+      <div class="textarea-wrapper">
+        <textarea
+          [(ngModel)]="questionText"
+          rows="6"
+          placeholder="Example: Solve 2x + 3 = 11"
+          maxlength="500">
+        </textarea>
+      </div>
+
+      <div class="input-meta">
+        <span>{{ questionText.length }}/500 characters</span>
+      </div>
+
+      <div class="apply-actions">
+        <button
+          class="primary-btn"
+          (click)="submit()"
+          [disabled]="!questionText.trim()">
+
+          Initiate Practice Session
+
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

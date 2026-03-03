@@ -1,0 +1,49 @@
+<section class="verify-panel">
+
+  <div class="verify-header">
+    <h3>Knowledge Verification</h3>
+    <p class="subtext">
+      Provide concise answers. The system will calibrate explanation depth based on your responses.
+    </p>
+  </div>
+
+  <div class="questions">
+    @for (q of questions; track $index; let i = $index) {
+      <div class="question-block">
+        <p class="question">{{ i + 1 }}. {{ q }}</p>
+
+        <textarea
+          [(ngModel)]="answers[i]"
+          rows="3"
+          placeholder="Type your answer here..."
+          [disabled]="isVerifying">
+        </textarea>
+      </div>
+    }
+  </div>
+
+  <div class="actions">
+    <button
+      class="continue"
+      (click)="submit()"
+      [disabled]="isVerifying">
+
+      <span *ngIf="!isVerifying">Analyze & Continue</span>
+
+      <span *ngIf="isVerifying" class="btn-loader">
+        <span class="spinner"></span>
+        Analyzing...
+      </span>
+
+    </button>
+  </div>
+
+  <!-- Full screen overlay loader -->
+  <div class="overlay-loader" *ngIf="isVerifying">
+    <div class="loader-box">
+      <div class="ai-pulse"></div>
+      <p>Calibrating cognitive profile...</p>
+    </div>
+  </div>
+
+</section>

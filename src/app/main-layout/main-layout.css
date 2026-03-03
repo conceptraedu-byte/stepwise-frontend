@@ -1,0 +1,21 @@
+:host {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  overflow: hidden;   /* CRITICAL */
+}
+
+/* Analytics panel (fixed width, no scroll bleed) */
+app-analytics-panel {
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Tutor workspace (main working area) */
+app-tutor-workspace {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;   /* Scroll must be inside, not here */
+}

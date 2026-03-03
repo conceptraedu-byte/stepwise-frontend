@@ -1,0 +1,253 @@
+/* ============================================= */
+/* DARK AI LAB — CHAT + PRACTICE SYSTEM */
+/* ============================================= */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* background: var(--surface-2); */
+  border-radius: 20px;
+  /* border: 1px solid var(--border-default); */
+  padding: 24px;
+}
+
+/* ============================================= */
+/* CHAT MESSAGES */
+/* ============================================= */
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-right: 6px;
+}
+
+.message {
+  display: flex;
+  animation: fadeIn 0.25s ease both;
+}
+
+.ideal-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 12px;
+  line-height: 1.75;
+  font-size: 14.5px;
+  color: #E2E8F0;
+  white-space: normal;
+}
+
+.ideal-box strong {
+  color: #60A5FA;
+  display: block;
+  margin-top: 10px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.message.user .bubble {
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 0 20px rgba(59,130,246,0.4);
+}
+
+.message.bot .bubble {
+  background: var(--surface-3);
+  color: var(--text-primary);
+  border-bottom-left-radius: 6px;
+  border: 1px solid var(--border-soft);
+}
+
+/* ============================================= */
+/* AI TYPING INDICATOR */
+/* ============================================= */
+
+.bubble.typing {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 16px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+
+/* ============================================= */
+/* CHAT INPUT */
+/* ============================================= */
+
+.chat-input {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-3);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.chat-input input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
+
+.chat-input button {
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-input button:hover {
+  box-shadow: 0 0 20px rgba(59,130,246,0.6);
+  transform: translateY(-1px);
+}
+
+/* ============================================= */
+/* PRACTICE MODE */
+/* ============================================= */
+
+.practice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.question-card,
+.answer-card,
+.feedback-card {
+  background: var(--surface-2);
+  border-radius: 20px;
+  border: 1px solid var(--border-default);
+  padding: 28px;
+  box-shadow: var(--shadow-elevated);
+}
+
+.question-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.question-text {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-top: 12px;
+  color: var(--text-primary);
+}
+
+.answer-card textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-3);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.answer-card textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
+
+/* ============================================= */
+/* BUTTONS */
+/* ============================================= */
+
+.primary-btn {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 14px;
+  padding: 10px 22px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.primary-btn:hover:not(:disabled) {
+  box-shadow: 0 0 25px rgba(59,130,246,0.6);
+}
+
+.primary-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================= */
+/* SCORE PROGRESS */
+/* ============================================= */
+
+.score-progress {
+  height: 8px;
+  background: var(--surface-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.score-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ============================================= */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

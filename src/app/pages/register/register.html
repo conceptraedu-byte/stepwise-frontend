@@ -1,0 +1,80 @@
+<div class="auth-wrapper">
+
+  <!-- LEFT SIDE -->
+  <div class="auth-hero">
+    <div class="hero-content">
+      <h1>Join StepWise AI</h1>
+      <p class="hero-sub">
+        Structured learning. Real mock exams.
+        Designed for serious students.
+      </p>
+
+      <div class="hero-points">
+        <div>✔ Real exam simulations</div>
+        <div>✔ Performance analytics</div>
+        <div>✔ Concept mastery tracking</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="auth-card">
+
+    <div class="card-header">
+      <h2>Create Account</h2>
+      <p>Start your preparation journey today</p>
+    </div>
+
+    <form class="form-grid">
+
+      <div class="form-group">
+        <input type="text" [(ngModel)]="name" name="name" required placeholder=" ">
+        <label>Full Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="email" [(ngModel)]="email" name="email" required placeholder=" ">
+        <label>Email Address</label>
+      </div>
+
+      <div class="form-group">
+        <input type="password" [(ngModel)]="password" name="password" required placeholder=" ">
+        <label>Password</label>
+      </div>
+
+      <div class="form-group">
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder=" ">
+        <label>Confirm Password</label>
+      </div>
+
+      <div class="form-group">
+        <input type="number" [(ngModel)]="classLevel" name="classLevel" required placeholder=" ">
+        <label>Class Level</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" [(ngModel)]="board" name="board" required placeholder=" ">
+        <label>Board</label>
+      </div>
+
+    </form>
+
+    <button class="primary-btn"
+            [disabled]="loading"
+            (click)="register()">
+      {{ loading ? 'Creating Account...' : 'Create Account' }}
+    </button>
+
+    <p class="error-msg" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+    <div class="divider"></div>
+
+    <p class="register-link">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+
+  </div>
+</div>

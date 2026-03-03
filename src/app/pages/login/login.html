@@ -1,0 +1,59 @@
+<div class="auth-wrapper">
+
+  <!-- Left Branding Section -->
+  <div class="auth-hero">
+    <div class="hero-content">
+      <h1>Master Your Concepts.</h1>
+      <p>
+        Structured learning. Real mock exams.
+        Designed for serious students.
+      </p>
+    </div>
+  </div>
+
+  <!-- Right Login Card -->
+  <div class="auth-card">
+
+    <div class="card-header">
+      <h2>Welcome Back</h2>
+      <p>Login to continue your preparation</p>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="email" 
+        [(ngModel)]="email" 
+        required
+        placeholder=" " />
+      <label>Email Address</label>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="password" 
+        [(ngModel)]="password"
+        required
+        placeholder=" " />
+      <label>Password</label>
+    </div>
+
+    <button 
+      class="login-btn"
+      [disabled]="!email || !password"
+      (click)="login()">
+
+      Login
+    </button>
+
+    <p class="register-link">
+  Don’t have an account?
+  <a routerLink="/register">Create one</a>
+</p>
+
+
+    <p class="error-msg" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+  </div>
+</div>

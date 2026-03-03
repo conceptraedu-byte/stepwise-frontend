@@ -1,0 +1,265 @@
+/* ============================= */
+/* DARK AI LAB ENVIRONMENT */
+/* ============================= */
+
+.learn-entry-shell {
+  min-height: 100vh;
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(59,130,246,0.08), transparent 40%),
+    #0F172A;
+}
+
+/* ============================= */
+/* MAIN CONTROL PANEL */
+/* ============================= */
+
+.learn-card {
+  width: 100%;
+  max-width: 820px;
+  background: #111827;
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow:
+    0 0 0 1px rgba(59,130,246,0.08),
+    0 30px 80px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
+.learn-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.learn-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#2563EB,#4F46E5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 0 25px rgba(59,130,246,0.4);
+}
+
+.learn-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #E5E7EB;
+}
+
+.learn-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #94A3B8;
+}
+
+/* ============================= */
+/* PROGRESS TELEMETRY */
+/* ============================= */
+
+.progress-telemetry {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.progress-telemetry svg {
+  transform: rotate(-90deg);
+}
+
+.progress-telemetry path {
+  fill: none;
+  stroke-width: 3;
+}
+
+.progress-telemetry .bg {
+  stroke: #1F2937;
+}
+
+.progress-telemetry .meter {
+  stroke: #3B82F6;
+  transition: stroke-dasharray 0.4s ease;
+}
+
+.progress-telemetry span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #E5E7EB;
+}
+
+/* ============================= */
+/* INPUTS */
+/* ============================= */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748B;
+}
+
+input,
+textarea {
+  background: #0B1220;
+  border: 1px solid #1F2937;
+  border-radius: 16px;
+  padding: 14px;
+  font-size: 14px;
+  color: #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #475569;
+}
+
+.input-group.focused input,
+.input-group.focused textarea {
+  border: 1px solid #3B82F6;
+  box-shadow: 0 0 20px rgba(59,130,246,0.25);
+}
+
+/* ============================= */
+/* CHIPS */
+/* ============================= */
+
+.chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #1F2937;
+  font-size: 12px;
+  color: #CBD5E1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #1F2937;
+}
+
+.chip:hover {
+  background: #2563EB;
+  color: white;
+  box-shadow: 0 0 12px rgba(59,130,246,0.5);
+}
+
+/* ============================= */
+/* HELPER */
+/* ============================= */
+
+.helper {
+  font-size: 12px;
+  color: #64748B;
+}
+
+/* ============================= */
+/* AI ANALYZING INDICATOR */
+/* ============================= */
+
+.ai-typing {
+  position: relative;
+  font-size: 12px;
+  color: #3B82F6;
+  /* padding-left: 6px; */
+  width: 190px;
+}
+
+.scan-line {
+  position: absolute;
+  left: 50px;
+  right: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+  animation: scan 1.7s infinite;
+  top: 0;
+}
+
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ============================= */
+/* CTA */
+/* ============================= */
+
+.primary-btn {
+  padding: 14px 28px;
+  border-radius: 18px;
+  background: #2563EB;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 25px rgba(59,130,246,0.3);
+}
+
+.primary-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(59,130,246,0.6);
+}
+
+.primary-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .learn-card {
+    padding: 28px;
+  }
+
+  .learn-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .progress-telemetry {
+    align-self: flex-end;
+  }
+
+  .primary-btn {
+    width: 100%;
+  }
+}

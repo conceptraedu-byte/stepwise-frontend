@@ -1,0 +1,81 @@
+<div class="history-wrapper">
+
+  <div class="history-header">
+    <h1>Mock Test History</h1>
+    <p>Track your performance and improvement over time</p>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="loader"></div>
+      <p>Loading your history...</p>
+    </div>
+  }
+
+  @else {
+
+    @if (history.length === 0) {
+      <div class="empty-state">
+        <h3>No Tests Attempted Yet</h3>
+        <p>Start your first mock test to see performance analytics.</p>
+      </div>
+    }
+
+    @else {
+
+      <div class="history-grid">
+
+        @for (item of history; track item.session_id) {
+
+          <div class="history-card">
+
+            <div class="card-top">
+              <div>
+                <div class="subject">
+                  {{ item.subject }} · Class {{ item.class_level }}
+                </div>
+                <div class="chapter" *ngIf="item.chapter">
+                  {{ item.chapter }}
+                </div>
+              </div>
+
+              <div class="date">
+                {{ item.completed_at * 1000 | date:'medium' }}
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div class="score-block">
+                <div class="score-main">
+                  {{ item.score }} / {{ item.total }}
+                </div>
+                <div class="score-sub">
+                  Questions Correct
+                </div>
+              </div>
+
+              <div class="accuracy-block"
+                   [ngClass]="getAccuracyClass(item.accuracy)">
+                {{ item.accuracy }}%
+              </div>
+
+            </div>
+
+            <div class="progress-bar">
+              <div class="progress-fill"
+                   [style.width.%]="item.accuracy">
+              </div>
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  }
+
+</div>

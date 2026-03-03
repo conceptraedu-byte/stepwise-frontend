@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===================================== */
+/* CONCEPTRA — DARK AI LAB FOUNDATION */
+/* ===================================== */
+
+:root {
+
+  /* SURFACES */
+  --surface-0: #0B1120;   /* App background */
+  --surface-1: #0F172A;   /* Layout panels */
+  --surface-2: #111827;   /* Cards */
+  --surface-3: #0B1220;   /* Inputs */
+
+  /* TEXT */
+  --text-primary: #E5E7EB;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-disabled: #475569;
+
+  /* BORDERS */
+  --border-default: #1F2937;
+  --border-soft: rgba(59,130,246,0.15);
+
+  /* ACCENT */
+  --accent: #3B82F6;
+  --accent-strong: #2563EB;
+  --accent-glow: rgba(59,130,246,0.5);
+
+  /* RADII */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  /* SHADOWS */
+  --shadow-elevated:
+    0 0 0 1px rgba(59,130,246,0.06),
+    0 25px 70px rgba(0,0,0,0.65);
+}
+
+/* GLOBAL ENVIRONMENT */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(59,130,246,0.08), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(99,102,241,0.06), transparent 40%),
+    var(--surface-0);
+  color: var(--text-primary);
+  font-family: Inter, system-ui, sans-serif;
+}

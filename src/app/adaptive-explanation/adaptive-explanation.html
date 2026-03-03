@@ -1,0 +1,109 @@
+<div class="adaptive-container" *ngIf="data">
+
+  <!-- ===================================================== -->
+  <!-- HEADER + DIFFICULTY CONTROL -->
+  <!-- ===================================================== -->
+  <div class="adaptive-header">
+
+    <h2>Structured Explanation</h2>
+
+    <div class="difficulty-selector">
+      <span>Difficulty:</span>
+
+      <button
+        [class.active]="currentDepth === 'simple'"
+        (click)="selectDifficulty('simple')">
+        Simplified
+      </button>
+
+      <button
+        [class.active]="currentDepth === 'board'"
+        (click)="selectDifficulty('board')">
+        Board Level
+      </button>
+
+      <button
+        [class.active]="currentDepth === 'advanced'"
+        (click)="selectDifficulty('advanced')">
+        Advanced
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- CORE CONTENT -->
+  <!-- ===================================================== -->
+
+  <section class="explanation-block">
+    <h3>Definition</h3>
+    <p>{{ data.definition }}</p>
+  </section>
+
+  <section class="explanation-block">
+    <h3>Core Concept</h3>
+    <p>{{ data.core_concept }}</p>
+  </section>
+
+  <section class="explanation-block" *ngIf="data.formula">
+    <h3>Formula</h3>
+    <p>{{ data.formula }}</p>
+  </section>
+
+  <section class="explanation-block">
+    <h3>Stepwise Logic</h3>
+    <ol>
+      <li *ngFor="let step of data.stepwise_logic">
+        {{ step }}
+      </li>
+    </ol>
+  </section>
+
+  <section class="explanation-block">
+    <h3>Common Mistakes</h3>
+    <ul>
+      <li *ngFor="let mistake of data.common_mistakes">
+        {{ mistake }}
+      </li>
+    </ul>
+  </section>
+
+  <section class="explanation-block">
+    <h3>Board Exam Format</h3>
+    <div class="exam-format">
+      {{ data.exam_format_answer }}
+    </div>
+  </section>
+
+  <section class="explanation-block reinforcement">
+    <h3>Reinforcement Question</h3>
+    <p>{{ data.reinforcement_question }}</p>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- CONTROL ACTIONS -->
+  <!-- ===================================================== -->
+
+  <div class="adaptive-controls">
+
+    <button
+      class="ghost-btn"
+      (click)="explainSimpler()">
+      Explain Simpler
+    </button>
+
+    <button
+      class="primary-btn"
+      (click)="goToPractice()">
+      Practice This Topic
+    </button>
+
+    <button
+      class="secondary-btn"
+      (click)="goToChat()">
+      Continue Discussion
+    </button>
+
+  </div>
+
+</div>

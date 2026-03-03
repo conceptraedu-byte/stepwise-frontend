@@ -1,0 +1,37 @@
+<div class="step-indicator">
+
+  <div class="progress-line"></div>
+
+  <div class="step"
+       [class.completed]="phase !== 'diagnose'"
+       [class.active]="phase === 'diagnose'">
+    <div class="step-circle">1</div>
+    <div class="step-text">
+      <div class="step-title">Diagnose</div>
+      <div class="step-sub">Identify knowledge gaps</div>
+    </div>
+  </div>
+
+  <div class="step"
+       [class.completed]="phase === 'verify' || phase === 'apply'"
+       [class.active]="phase === 'learn'"
+       [class.locked]="phase === 'diagnose'">
+    <div class="step-circle">2</div>
+    <div class="step-text">
+      <div class="step-title">Learn</div>
+      <div class="step-sub">Guided explanation</div>
+    </div>
+  </div>
+
+  <div class="step"
+       [class.completed]="phase === 'apply'"
+       [class.active]="phase === 'verify'"
+       [class.locked]="phase !== 'verify'">
+    <div class="step-circle">3</div>
+    <div class="step-text">
+      <div class="step-title">Verify</div>
+      <div class="step-sub">Concept validation</div>
+    </div>
+  </div>
+
+</div>

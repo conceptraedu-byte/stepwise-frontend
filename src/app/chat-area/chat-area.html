@@ -1,0 +1,239 @@
+<!-- ===================================================== -->
+<!-- PRACTICE MODE -->
+<!-- ===================================================== -->
+@if (practiceMode) {
+
+  <div class="practice-container">
+
+    <!-- ================= QUESTION CARD ================= -->
+    <div class="question-card">
+      <div class="question-header">
+        <span class="question-label">Practice Question</span>
+      </div>
+      <p class="question-text">
+        {{ practiceQuestion }}
+      </p>
+    </div>
+
+    <!-- ================= ANSWER SECTION ================= -->
+    <div class="answer-card">
+
+      <label>Your Answer</label>
+
+      <textarea
+        [(ngModel)]="practiceAnswer"
+        rows="6"
+        placeholder="Write your solution clearly and step-by-step...">
+      </textarea>
+
+      <button
+        class="primary-btn"
+        (click)="submitPracticeAnswer()"
+        [disabled]="!practiceAnswer.trim() || isEvaluating">
+
+        @if (!isEvaluating) {
+          Submit Answer
+        } @else {
+          <span class="loader-container">
+            <span class="spinner"></span>
+            Evaluating...
+          </span>
+        }
+
+      </button>
+
+    </div>
+
+    <!-- ================= EVALUATING STATE ================= -->
+    @if (isEvaluating) {
+      <div class="feedback-card loading">
+        <div class="spinner large"></div>
+        <div>
+          <strong>Evaluating Answer</strong>
+          <p>Analyzing conceptual clarity, structure, and board accuracy...</p>
+        </div>
+      </div>
+    }
+
+    <!-- ================= STRUCTURED FEEDBACK ================= -->
+    @if (!isEvaluating && practiceScore !== null) {
+
+      <div class="feedback-card structured">
+
+        <!-- SCORE SECTION -->
+        <div class="score-wrapper">
+
+          <div class="score-header">
+
+            <div class="score-badge" [ngClass]="scoreClass">
+              Score: {{ practiceScore }}
+
+              @if (scoreDelta !== null) {
+                <span
+                  class="score-delta"
+                  [ngClass]="{
+                    'delta-up': scoreDelta > 0,
+                    'delta-down': scoreDelta < 0
+                  }">
+                  {{ scoreDelta > 0 ? '+' : '' }}{{ scoreDelta }}
+                </span>
+              }
+
+            </div>
+
+            <div class="attempt-counter">
+              Attempt {{ practiceAttempts }}
+            </div>
+
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="score-progress">
+            <div
+              class="score-progress-fill"
+              [style.width.%]="scorePercentage">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- WEAKNESS TAGS -->
+        @if (weaknessTags.length > 0) {
+          <div class="weakness-tags">
+            @for (tag of weaknessTags; track $index) {
+              <span class="weakness-chip">{{ tag }}</span>
+            }
+          </div>
+        }
+
+        <!-- STRENGTHS -->
+        @if (practiceStrengths.length > 0) {
+          <div class="feedback-section strengths">
+            <h4>Strengths</h4>
+            <ul>
+              @for (item of practiceStrengths; track $index) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <!-- MISSING CONCEPTS -->
+        @if (practiceMissing.length > 0) {
+          <div class="feedback-section missing">
+            <h4>Missing Concepts</h4>
+            <ul>
+              @for (item of practiceMissing; track $index) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <!-- IMPROVEMENT ADVICE -->
+        @if (practiceAdvice) {
+          <div class="feedback-section advice">
+            <h4>Improvement Advice</h4>
+            <p>{{ practiceAdvice }}</p>
+          </div>
+        }
+
+        <!-- IDEAL ANSWER -->
+        @if (practiceIdeal) {
+          <div class="feedback-section ideal">
+            <h4>Ideal Full-Mark Answer</h4>
+           <div class="ideal-box" [innerHTML]="formattedIdealAnswer"></div>
+          </div>
+        }
+
+        <!-- ATTEMPT HISTORY -->
+        @if (attemptHistory.length > 1) {
+          <div class="attempt-history">
+            <h4>Attempt History</h4>
+            <div class="history-list">
+              @for (attempt of attemptHistory; track $index) {
+                <div class="history-item">
+                  Attempt {{ $index + 1 }} — {{ attempt }}
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- REFINEMENT CONTROLS -->
+        <div class="refinement-controls">
+          <button class="secondary-btn" (click)="prepareRefinement()">
+            Rewrite Answer (Attempt {{ practiceAttempts + 1 }})
+          </button>
+
+          <button class="ghost-btn" (click)="resetPractice()">
+            Try New Question
+          </button>
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+}
+
+<!-- ===================================================== -->
+<!-- CHAT MODE -->
+<!-- ===================================================== -->
+@else {
+
+  <div class="chat-container">
+
+    <!-- ================= MESSAGES ================= -->
+    <div class="chat-messages">
+
+      @for (msg of messages; track $index) {
+
+        <div
+          class="message"
+          [class.user]="msg.role === 'user'"
+          [class.bot]="msg.role === 'bot'">
+
+          <div class="bubble">
+            {{ msg.text }}
+          </div>
+
+        </div>
+
+      }
+
+      <!-- AI TYPING INDICATOR -->
+      @if (isBotTyping) {
+        <div class="message bot">
+          <div class="bubble typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- ================= INPUT BAR ================= -->
+    <div class="chat-input">
+
+      <input
+        #userInput
+        type="text"
+        placeholder="Ask your question..."
+        (keyup.enter)="sendUserMessage(userInput.value); userInput.value='';"
+      />
+
+      <button
+        type="button"
+        (click)="sendUserMessage(userInput.value); userInput.value='';">
+        ➤
+      </button>
+
+    </div>
+
+  </div>
+
+}

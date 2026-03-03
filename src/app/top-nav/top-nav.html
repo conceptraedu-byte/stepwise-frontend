@@ -1,0 +1,62 @@
+<nav class="top-nav">
+
+  <!-- Left: Brand -->
+  <div class="nav-left">
+    <div class="brand">
+      <div class="logo">C</div>
+      <span class="name">Conceptra</span>
+    </div>
+  </div>
+
+  <!-- Center: Primary Navigation -->
+  <div class="nav-center">
+<button
+  class="nav-item"
+  routerLink="/tutor"
+  routerLinkActive="active">
+  Tutor
+</button>
+    <!-- <button class="nav-item">Practice</button>
+    <button class="nav-item">Revision</button> -->
+    <button class="nav-item" routerLink="/dashboard" routerLinkActive="active">Progress</button>
+    <button class="nav-item"  routerLink="/mock-test" routerLinkActive="active">Mock Test</button>
+    <button class="nav-item"  routerLink="/mock-history" routerLinkActive="active">Mock History</button>
+
+
+
+  </div>
+
+  <!-- Right: Context + User -->
+<div class="nav-right">
+
+  <!-- <div class="mode-chip">Exam Mode</div> -->
+
+  <!-- <div class="streak">
+    🔥 <strong>0</strong>
+    <span>day streak</span>
+  </div> -->
+
+  @if (!user) {
+    <button class="nav-item" routerLink="/login">
+      Login
+    </button>
+  }
+
+  @if (user) {
+    <div class="user-section">
+      <span class="greeting">
+        Hi, <strong>{{ user.name }}</strong>
+      </span>
+
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  }
+
+</div>
+
+
+
+
+</nav>

@@ -1,0 +1,139 @@
+:root {
+  --bg-main: #0f172a;
+  --bg-card: #111827;
+  --bg-soft: #1f2933;
+
+  --accent: #4f46e5;
+  --accent-soft: rgba(79, 70, 229, 0.15);
+
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.analytics-panel {
+  width: 100%;
+  max-width: 320px;
+  background: var(--bg-main);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: fixed;
+}
+
+/* Header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status-dot {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+}
+
+.card.highlight {
+  border: 1px solid var(--accent-soft);
+}
+
+.card-title {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Stats */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.stat-value span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Circular Progress */
+.progress-ring {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--accent) calc(var(--value) * 1%),
+    var(--bg-soft) 0
+  );
+}
+
+/* Grid Stats */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.mini-stat {
+  background: var(--bg-soft);
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.mini-stat p {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mini-stat strong {
+  font-size: 18px;
+}
+
+/* Focus Chip */
+.focus-chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  align-self: flex-start;
+}

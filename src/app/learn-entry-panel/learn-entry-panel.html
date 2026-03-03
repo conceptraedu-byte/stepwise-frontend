@@ -1,0 +1,104 @@
+<section class="learn-entry-shell">
+
+  <div class="learn-card">
+
+    <!-- HEADER WITH INTEGRATED PROGRESS -->
+    <div class="learn-header">
+
+      <div class="header-left">
+        <div class="learn-icon">🧠</div>
+        <div>
+          <h2>{{ title }}</h2>
+          <p>Precision explanation protocol ready.</p>
+        </div>
+      </div>
+
+      <!-- PROGRESS TELEMETRY -->
+      <div class="progress-telemetry">
+        <svg viewBox="0 0 36 36">
+          <path class="bg"
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          <path class="meter"
+            [attr.stroke-dasharray]="progress + ', 100'"
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        </svg>
+        <span>{{ progress }}%</span>
+      </div>
+
+    </div>
+
+    <!-- TOPIC INPUT -->
+    <div class="input-group"
+         [class.focused]="isFocusedTopic">
+      <label>Chapter / Topic</label>
+
+      <input
+        [(ngModel)]="topicName"
+        (focus)="isFocusedTopic = true"
+        (blur)="isFocusedTopic = false"
+        placeholder="Enter topic name"
+      />
+
+      <!-- SUGGESTION CHIPS -->
+      <div class="chips">
+        <span
+          class="chip"
+          *ngFor="let topic of suggestedTopics"
+          (click)="selectSuggestion(topic)">
+          {{ topic }}
+        </span>
+      </div>
+    </div>
+
+    <!-- CLARIFICATION -->
+    <div class="input-group"
+         [class.focused]="isFocusedClarification">
+      <label>{{ prompt }}</label>
+
+      <textarea
+        [(ngModel)]="clarificationText"
+        (focus)="isFocusedClarification = true"
+        (blur)="isFocusedClarification = false"
+        (input)="onClarificationInput()"
+        [placeholder]="dynamicPlaceholder"
+        rows="4">
+      </textarea>
+
+      <!-- DYNAMIC HELPER -->
+      <div class="helper">
+        <span *ngIf="clarificationLength < 10">
+          Increase detail for higher precision output.
+        </span>
+        <span *ngIf="clarificationLength >= 10 && clarificationLength < 30">
+          Signal detected. Expanding clarity improves accuracy.
+        </span>
+        <span *ngIf="clarificationLength >= 30">
+          Input density optimal. Ready for processing.
+        </span>
+      </div>
+
+      <!-- AI ANALYZING INDICATOR -->
+      <div class="ai-typing" *ngIf="isTyping">
+        <div class="scan-line"></div>
+        AI analyzing input...
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="action-container">
+      <button
+        class="primary-btn"
+        (click)="submit()"
+        [disabled]="progress < 100">
+        Execute Explanation →
+      </button>
+    </div>
+
+  </div>
+
+</section>
