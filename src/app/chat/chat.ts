@@ -1,10 +1,16 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BillingService } from '../services/billing.service';
 import { FormsModule } from '@angular/forms';
+import { ChatService } from '../services/chat.service';
 
 interface ChatMessage {
   role: 'user' | 'bot';
   text: string;
+
+  // 🔥 ADD THESE
+  input_mode?: 'short' | 'mcq';
+  options?: string[];
 }
 
 @Component({
@@ -14,13 +20,19 @@ interface ChatMessage {
   templateUrl: './chat.html',
   styleUrls: ['./chat.css']
 })
+
+
 export class ChatComponent {
+
+  
 
   @ViewChild('chatBody') chatBody!: ElementRef<HTMLDivElement>;
 
   messages: ChatMessage[] = [];
   userInput = '';
   isBotThinking = false;
+
+ 
 
   // streaming
   STREAM_API_URL = 'http://localhost:8000/chat/stream';
@@ -37,8 +49,7 @@ export class ChatComponent {
   totalSteps = 5;
   hintLevel = 0;
 
-  constructor() {}
-
+constructor(private billing: BillingService) {}
   // -----------------------------
   // Send message
   // -----------------------------
@@ -91,15 +102,22 @@ export class ChatComponent {
         botMsg.text += '\n\n[Error while generating]';
       }
     } finally {
-      const wait = setInterval(() => {
-        if (this.typingQueue.length === 0) {
-          clearInterval(wait);
-          this.stopTyping();
-          this.isBotThinking = false;
-          this.abortController = null;
-        }
-      }, 50);
+  const wait = setInterval(() => {
+
+    if (this.typingQueue.length === 0) {
+
+      clearInterval(wait);
+      this.stopTyping();
+      this.isBotThinking = false;
+      this.abortController = null;
+
+      // 🔥 refresh credits after response finishes
+      this.billing.refreshBilling();
+
     }
+
+  }, 50);
+}
   }
 
   // -----------------------------

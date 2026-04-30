@@ -8,9 +8,14 @@
   </div>
 
   <div class="questions">
+
     @for (q of questions; track $index; let i = $index) {
+
       <div class="question-block">
-        <p class="question">{{ i + 1 }}. {{ q }}</p>
+
+        <p class="question">
+          {{ i + 1 }}. {{ q }}
+        </p>
 
         <textarea
           [(ngModel)]="answers[i]"
@@ -18,32 +23,54 @@
           placeholder="Type your answer here..."
           [disabled]="isVerifying">
         </textarea>
+
       </div>
+
     }
+
   </div>
 
   <div class="actions">
+
     <button
       class="continue"
       (click)="submit()"
       [disabled]="isVerifying">
 
-      <span *ngIf="!isVerifying">Analyze & Continue</span>
+      @if (!isVerifying) {
 
-      <span *ngIf="isVerifying" class="btn-loader">
-        <span class="spinner"></span>
-        Analyzing...
-      </span>
+        <span>Analyze & Continue</span>
+
+      } @else {
+
+        <span class="btn-loader">
+          <span class="spinner"></span>
+          Analyzing...
+        </span>
+
+      }
 
     </button>
+
   </div>
 
-  <!-- Full screen overlay loader -->
-  <div class="overlay-loader" *ngIf="isVerifying">
-    <div class="loader-box">
-      <div class="ai-pulse"></div>
-      <p>Calibrating cognitive profile...</p>
+
+  <!-- FULL SCREEN AI LOADER -->
+
+  @if (isVerifying) {
+
+    <div class="overlay-loader">
+
+      <div class="loader-box">
+
+        <div class="ai-pulse"></div>
+
+        <p>Estimating concept familiarity...</p>
+
+      </div>
+
     </div>
-  </div>
+
+  }
 
 </section>

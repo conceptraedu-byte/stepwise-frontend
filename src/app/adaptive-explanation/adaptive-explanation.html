@@ -1,32 +1,57 @@
-<div class="adaptive-container" *ngIf="data">
+<div class="adaptive-container">
+
+  @if (isLoading) {
+
+    <div class="ai-loading-overlay">
+      <div class="ai-loader">
+        <div class="ai-brain"></div>
+        <div class="ai-text">
+          Generating {{ currentDepth }} explanation...
+        </div>
+      </div>
+    </div>
+
+  }
+
+  @if (data) {
 
   <!-- ===================================================== -->
-  <!-- HEADER + DIFFICULTY CONTROL -->
+  <!-- HEADER -->
   <!-- ===================================================== -->
+
   <div class="adaptive-header">
 
-    <h2>Structured Explanation</h2>
+    <div class="title-group">
+      <h2 class="title">Structured Explanation</h2>
+      <span class="subtitle">AI Guided Understanding</span>
+    </div>
 
-    <div class="difficulty-selector">
-      <span>Difficulty:</span>
+    <div class="difficulty-buttons">
 
       <button
+        class="diff-btn"
         [class.active]="currentDepth === 'simple'"
-        (click)="selectDifficulty('simple')">
+        (click)="onDifficultyClick('simple')">
+        <span class="dot"></span>
         Simplified
       </button>
 
       <button
+        class="diff-btn"
         [class.active]="currentDepth === 'board'"
-        (click)="selectDifficulty('board')">
+        (click)="onDifficultyClick('board')">
+        <span class="dot"></span>
         Board Level
       </button>
 
       <button
+        class="diff-btn"
         [class.active]="currentDepth === 'advanced'"
-        (click)="selectDifficulty('advanced')">
+        (click)="onDifficultyClick('advanced')">
+        <span class="dot"></span>
         Advanced
       </button>
+
     </div>
 
   </div>
@@ -35,75 +60,227 @@
   <!-- CORE CONTENT -->
   <!-- ===================================================== -->
 
-  <section class="explanation-block">
-    <h3>Definition</h3>
-    <p>{{ data.definition }}</p>
-  </section>
+  <div class="explanation-grid">
 
-  <section class="explanation-block">
-    <h3>Core Concept</h3>
-    <p>{{ data.core_concept }}</p>
-  </section>
+    @if (data.intro) {
+      <section class="explanation-card highlight">
+        <h3>Understanding First</h3>
+        <p>{{ data.intro }}</p>
+      </section>
+    }
 
-  <section class="explanation-block" *ngIf="data.formula">
-    <h3>Formula</h3>
-    <p>{{ data.formula }}</p>
-  </section>
+    @if (data.definition) {
+      <section class="explanation-card">
+        <h3>Definition</h3>
+        <p>{{ data.definition }}</p>
+      </section>
+    }
 
-  <section class="explanation-block">
-    <h3>Stepwise Logic</h3>
-    <ol>
-      <li *ngFor="let step of data.stepwise_logic">
-        {{ step }}
-      </li>
-    </ol>
-  </section>
+    @if (data.key_points?.length) {
+      <section class="explanation-card">
+        <h3>Key Points</h3>
+        <ul>
+          @for (point of data.key_points; track $index) {
+            <li>{{ point }}</li>
+          }
+        </ul>
+      </section>
+    }
 
-  <section class="explanation-block">
-    <h3>Common Mistakes</h3>
-    <ul>
-      <li *ngFor="let mistake of data.common_mistakes">
-        {{ mistake }}
-      </li>
-    </ul>
-  </section>
+    <!-- FORMULA -->
+    @if (data.formula?.items?.length) {
 
-  <section class="explanation-block">
-    <h3>Board Exam Format</h3>
-    <div class="exam-format">
-      {{ data.exam_format_answer }}
+    <section class="explanation-card formula-card">
+
+  <h3>Formulas</h3>
+
+  @for (f of data.formula.items; track $index) {
+
+    <div class="formula-card-inner">
+
+      <div class="formula-header">
+        {{ f.name }}
+      </div>
+
+      @if (f.symbolic) {
+        <div class="formula-main">
+          {{ f.symbolic }}
+        </div>
+      }
+
+      @if (f.meaning) {
+        <div class="formula-meaning">
+          <span class="label">Meaning:</span>
+          {{ f.meaning }}
+        </div>
+      }
+
+      @if (f.simple) {
+        <div class="formula-simple">
+          <span class="label">Simple:</span>
+          {{ f.simple }}
+        </div>
+      }
+
     </div>
-  </section>
 
-  <section class="explanation-block reinforcement">
-    <h3>Reinforcement Question</h3>
-    <p>{{ data.reinforcement_question }}</p>
-  </section>
+  }
+
+</section>
+
+    }
+
+    <!-- STEPWISE -->
+    @if (data.step_by_step_logic?.length) {
+
+      <section class="explanation-card">
+
+        <h3>Step-by-Step Thinking</h3>
+
+        <ol class="logic-list">
+          @for (step of data.step_by_step_logic; track $index) {
+            <li>{{ step }}</li>
+          }
+        </ol>
+
+      </section>
+
+    }
+
+    <!-- EXAMPLE -->
+    @if (data.example?.problem) {
+
+      <section class="explanation-card example-card">
+
+        <h3>Example</h3>
+
+        <p class="problem">{{ data.example.problem }}</p>
+
+        @if (data.example.solution_steps?.length) {
+          <ol>
+            @for (step of data.example.solution_steps; track $index) {
+              <li>{{ step }}</li>
+            }
+          </ol>
+        }
+
+      </section>
+
+    }
+
+    <!-- COMMON MISTAKES -->
+    @if (data.common_mistakes?.length) {
+
+      <section class="explanation-card">
+
+        <h3>Common Mistakes</h3>
+
+        <ul class="mistake-list">
+          @for (mistake of data.common_mistakes; track $index) {
+            <li>{{ mistake }}</li>
+          }
+        </ul>
+
+      </section>
+
+    }
+
+    <!-- EXAM TIP -->
+    @if (data.exam_tip) {
+
+      <section class="explanation-card exam-card">
+
+        <h3>Exam Tip</h3>
+
+        <div class="exam-format">
+          {{ data.exam_tip }}
+        </div>
+
+      </section>
+
+    }
+
+    <!-- REFLECTIVE -->
+    @if (data.reflective_question) {
+
+      <section class="explanation-card reinforcement">
+
+        <h3>Check Your Understanding</h3>
+
+        <p>{{ data.reflective_question }}</p>
+
+      </section>
+
+    }
+
+  </div>
 
   <!-- ===================================================== -->
-  <!-- CONTROL ACTIONS -->
+  <!-- DERIVATION TOGGLE -->
+  <!-- ===================================================== -->
+
+  @if (currentDepth !== 'simple' && data.derivation?.steps?.length && data.diagnosis !== 'concept' ) {
+
+    <div class="derivation-toggle-wrapper">
+
+      <button
+        class="derivation-toggle-btn" [class.active]="showDerivation"
+        (click)="toggleDerivation()">
+
+        {{ showDerivation ? 'Hide Why This Works' : 'See Why This Works' }}
+
+      </button>
+
+    </div>
+
+  }
+
+  <!-- ===================================================== -->
+  <!-- DERIVATION SECTION -->
+  <!-- ===================================================== -->
+
+  @if (showDerivation && data.derivation?.steps?.length && data.diagnosis !== 'concept') {
+
+    <section class="explanation-card derivation-card">
+
+      <h3>Why This Works (Derivation)</h3>
+
+     <ol class="derivation-steps">
+  @for (step of data.derivation.steps; track $index) {
+    <li>
+      <span class="step-number">{{ $index + 1 }}.</span>
+      <span class="step-text">{{ step }}</span>
+    </li>
+  }
+</ol>
+      @if (data.derivation.intuition) {
+        <p><b>Intuition:</b> {{ data.derivation.intuition }}</p>
+      }
+
+      @if (data.derivation.when_to_use) {
+        <p><b>When to use:</b> {{ data.derivation.when_to_use }}</p>
+      }
+
+    </section>
+
+  }
+
+  <!-- ===================================================== -->
+  <!-- ACTION BUTTONS -->
   <!-- ===================================================== -->
 
   <div class="adaptive-controls">
 
-    <button
-      class="ghost-btn"
-      (click)="explainSimpler()">
+    <button class="ghost-btn" (click)="explainSimpler()">
       Explain Simpler
     </button>
 
-    <button
-      class="primary-btn"
-      (click)="goToPractice()">
+    <button class="primary-btn" (click)="goToPractice()">
       Practice This Topic
     </button>
 
-    <button
-      class="secondary-btn"
-      (click)="goToChat()">
-      Continue Discussion
-    </button>
-
   </div>
+
+  }
 
 </div>

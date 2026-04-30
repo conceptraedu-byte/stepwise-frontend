@@ -24,21 +24,21 @@
         Chat
       </button>
 
-      <button
+      <!-- Manual practice -->
+      <!-- <button
         class="tab-btn"
-        [class.active]="mode === 'practice'"
-        (click)="switchToPractice()">
+        [class.active]="mode === 'practice' && !currentTopic"
+        (click)="switchToPractice(false)">
         Practice
-      </button>
+      </button> -->
     </div>
   </header>
 
   <!-- ===================================================== -->
-  <!-- MAIN LAYOUT GRID -->
+  <!-- MAIN GRID -->
   <!-- ===================================================== -->
   <div class="layout-grid">
 
-    <!-- ================= LEFT PRIMARY ZONE ================= -->
     <main class="primary-zone">
 
       <app-exam-mode-banner
@@ -50,51 +50,197 @@
 
       <div class="content-card fade-in">
 
-        <!-- ================= STRUCTURED MODE ================= -->
+        <!-- ===================================================== -->
+        <!-- STRUCTURED MODE -->
+        <!-- ===================================================== -->
+
         @if (mode === 'structured') {
 
           @if (phase === 'diagnose') {
+
             <diagnosis-panel
               (diagnosisSelected)="onDiagnosisSelected($event)">
             </diagnosis-panel>
+
           }
 
           @else if (phase === 'learn') {
+
             <learn-entry-panel
               [diagnosis]="diagnosisType!"
               (clarified)="onClarified($event)">
             </learn-entry-panel>
+
           }
 
           @else if (phase === 'verify') {
+
             <verification-panel
               [diagnosis]="diagnosisType!"
               (verified)="onVerified($event)">
             </verification-panel>
+
           }
+
+  @else if (phase === 'result') {
+
+  <div class="result-card">
+
+    <div class="badge"
+         [ngClass]="verificationResult.understanding">
+
+      @if (verificationResult.understanding === 'strong') {
+       Good Understanding
+You're ready to move ahead.
+      }
+
+      @else if (verificationResult.understanding === 'partial') {
+        Getting There
+You understand basics, refine it further.
+      }
+
+      @else {
+       Needs Improvement
+You're wrong, need both concepts and formula clarity.
+      }
+
+    </div>
+
+ <div class="diagnosis-block">
+
+  <div class="mistake-badge">
+    ⚠️ {{ verificationResult.mistake_type | titlecase }}
+  </div>
+
+<div class="analysis-block" *ngIf="verificationResult.analysis?.length > 0">
+
+  <div *ngFor="let item of verificationResult.analysis; let i = index" class="analysis-item">
+
+    <strong>{{ item.question }}</strong>
+
+    <p class="mistake">❌ {{ item.mistake }}</p>
+
+    <p class="why">{{ item.why_wrong }}</p>
+
+    <p class="fix">✔ {{ item.correct_concept }}</p>
+
+  </div>
+
+</div>
+
+  <div class="fix-box">
+    <strong>How to fix:</strong>
+    <p>{{ verificationResult.targeted_fix }}</p>
+  </div>
+
+  <div class="reason">
+  {{ verificationResult.summary }}
+</div>
+
+</div>
+
+    
+
+    <!-- ACTIONS -->
+
+    @if (verificationResult.nextAction === 'reteach') {
+
+      <button class="btn primary" (click)="loadExplanation('simple')">
+        Explain Simpler
+      </button>
+
+       <button class="btn ghost"
+        [disabled]="loading"
+        (click)="loadExplanation('board')">
+
+  @if (!loading) {
+    Review Deeper
+  }
+
+  @else {
+    <span class="btn-loader"></span>
+  }
+
+</button>
+
+    }
+
+    @else if (verificationResult.nextAction === 'practice') {
+
+      <button class="btn primary" (click)="switchToPractice(true)">
+        Practice Questions
+      </button>
+
+      <button class="btn ghost" (click)="loadExplanation('board')">
+        Review Explanation
+      </button>
+
+    }
+
+    @else {
+
+      <button class="btn primary" (click)="switchToPractice(true)">
+        Harder Question
+      </button>
+
+      <button class="btn ghost"
+        [disabled]="loading"
+        (click)="loadExplanation('board')">
+
+  @if (!loading) {
+    Review Deeper
+  }
+
+  @else {
+    <span class="btn-loader"></span>
+  }
+
+</button>
+
+    }
+
+  </div>
+
+}
 
           @else if (phase === 'adaptive') {
 
             <adaptive-explanation
               [data]="structuredExplanation"
               [currentDepth]="teachingDepth"
+              [isLoading]="loading"
+
               (difficultyChange)="changeDifficulty($event)"
               (simplify)="explainSimpler()"
-              (practice)="switchToPractice()"
+              (practice)="switchToPractice(true)"
               (chat)="switchToChat()">
             </adaptive-explanation>
 
             <div class="action-row">
-              <button class="btn secondary" (click)="switchToChat(true)">Continue Discussion</button>
-              <button class="btn primary" (click)="switchToPractice(true)">Practice This Topic</button>
-              <button class="btn ghost" (click)="askNewQuestion()">New Question</button>
-              <button class="btn ghost" (click)="switchToStructured()">Start New Topic</button>
+              <button class="btn primary"
+                      (click)="switchToPractice(true)">
+                Practice This Topic
+              </button>
+
+              <button class="btn ghost"
+                      (click)="askNewQuestion()">
+                New Question
+              </button>
+
+              <button class="btn ghost"
+                      (click)="switchToStructured()">
+                Start New Topic
+              </button>
             </div>
 
           }
+
         }
 
-        <!-- ================= CHAT MODE ================= -->
+        <!-- ===================================================== -->
+        <!-- CHAT MODE -->
+        <!-- ===================================================== -->
+
         @if (mode === 'chat') {
 
           <div class="chat-wrapper">
@@ -106,39 +252,69 @@
           </div>
 
           <div class="action-row">
-            <button class="btn secondary" (click)="switchToStructured()">Structured</button>
-            <button class="btn primary" (click)="switchToPractice()">Practice</button>
-            <button class="btn ghost" (click)="askNewQuestion()">New Question</button>
+
+            <button class="btn secondary"
+                    (click)="switchToStructured()">
+              Structured
+            </button>
+
+            <!-- AI practice -->
+            <button class="btn primary"
+                    (click)="switchToPractice(true)">
+              Practice This Topic
+            </button>
+
+            <button class="btn ghost"
+                    (click)="askNewQuestion()">
+              New Question
+            </button>
+
           </div>
+
         }
 
-        <!-- ================= PRACTICE MODE ================= -->
-        @if (mode === 'practice') {
+        <!-- ===================================================== -->
+        <!-- PRACTICE MODE -->
+        <!-- ===================================================== -->
+@if (mode === 'practice') {
 
-          <apply-intake-panel
-            (submitted)="startApply($event)">
-          </apply-intake-panel>
+  @if (loadingPractice) {
 
-          @if (applyStarted) {
-            <div class="chat-wrapper">
-              <app-chat-area
-                [initialQuestion]="initialQuestion"
-                [diagnosis]="diagnosisType"
-                [practiceMode]="true">
-              </app-chat-area>
-            </div>
-          }
+    <div class="practice-loader">
+      Generating practice question...
+    </div>
 
-          <div class="action-row">
-            <button class="btn ghost" (click)="switchToChat()">Back to Chat</button>
-            <button class="btn secondary" (click)="switchToStructured()">Structured</button>
-          </div>
-        }
+  }
+
+  @else if (currentPractice) {
+
+    <practice-question-panel
+  [question]="currentPractice?.question"
+  [evaluation]="practiceEvaluation"
+  (submittedAnswer)="onPracticeAnswer($event)"
+  (nextQuestion)="loadNextPracticeQuestion()">
+</practice-question-panel>
+
+  }
+
+  @else {
+
+    <div class="practice-loader">
+      Preparing practice session...
+    </div>
+
+  }
+
+}
 
       </div>
+
     </main>
 
-    <!-- ================= RIGHT INTELLIGENCE PANEL ================= -->
+    <!-- ===================================================== -->
+    <!-- RIGHT INTELLIGENCE PANEL -->
+    <!-- ===================================================== -->
+
     @if (structuredExplanation) {
 
       <aside class="insight-panel">
@@ -152,16 +328,19 @@
 
         <div class="insight-card">
           <div class="insight-title">Confidence Level</div>
+
           <div class="confidence-wrapper">
             <div class="confidence-percentage">
               {{ (confidenceScore * 100) | number:'1.0-0' }}%
             </div>
+
             <div class="confidence-track">
               <div class="confidence-fill"
                    [style.width.%]="confidenceScore * 100">
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="insight-card subtle">
@@ -172,6 +351,7 @@
         </div>
 
       </aside>
+
     }
 
   </div>

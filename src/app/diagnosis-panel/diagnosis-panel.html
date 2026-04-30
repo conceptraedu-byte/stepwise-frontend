@@ -12,7 +12,9 @@
 
     <button
       class="diagnosis-option primary"
+      [class.active]="selectedDiagnosis === 'concept'"
       (click)="select('concept')">
+
       <span class="title">Conceptual gap</span>
       <span class="desc">
         I don’t understand the core idea or reasoning
@@ -21,7 +23,9 @@
 
     <button
       class="diagnosis-option"
+      [class.active]="selectedDiagnosis === 'formula'"
       (click)="select('formula')">
+
       <span class="title">Formula gap</span>
       <span class="desc">
         I know the idea, but formulas confuse me
@@ -30,7 +34,9 @@
 
     <button
       class="diagnosis-option"
+      [class.active]="selectedDiagnosis === 'application'"
       (click)="select('application')">
+
       <span class="title">Application gap</span>
       <span class="desc">
         I understand concepts but get stuck while solving questions
@@ -39,7 +45,9 @@
 
     <button
       class="diagnosis-option muted"
+      [class.active]="selectedDiagnosis === 'unknown'"
       (click)="select('unknown')">
+
       <span class="title">Unclear gap</span>
       <span class="desc">
         I’m not sure exactly where I’m stuck

@@ -28,6 +28,7 @@ export class TutorStepIndicatorComponent {
     diagnose: 'Diagnose',
     learn: 'Learn',
     verify: 'Verify',
+    result: 'Result',
     adaptive: 'Tutor',
     apply: 'Apply',
     workspace: 'workspace'

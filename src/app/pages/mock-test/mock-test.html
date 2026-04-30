@@ -5,239 +5,338 @@
     <!-- CONFIGURATION SCREEN -->
     <!-- ========================================= -->
 
-    @if (!isTestStarted && !isTestFinished) {
+<div class="mock-workspace">
+  <div class="mock-container">
 
-      <div class="config-screen">
 
-        <!-- Left Panel -->
-        <div class="config-left">
+<!-- ========================================= -->
+<!-- CONFIGURATION SCREEN -->
+<!-- ========================================= -->
 
-          <div class="brand-block">
-            <div class="brand-logo">CONCEPTRA · STEPWISE</div>
-            <div class="brand-tag">AI Assessment Engine</div>
+@if (!isTestStarted && !isTestFinished) {
+
+  <div class="config-screen">
+
+    <div class="config-left">
+
+      <div class="brand-block">
+        <div class="brand-logo">CONCEPTRA · STEPWISE</div>
+        <div class="brand-tag">AI Assessment Engine</div>
+      </div>
+
+      <div class="hero-copy">
+        <h1>
+          Assessment<br>
+          <span class="accent">Initialization</span>
+        </h1>
+        <p>
+          Configure evaluation parameters and begin controlled performance simulation.
+        </p>
+      </div>
+
+      <div class="feature-list">
+        <div class="feat-item">Adaptive Question Intelligence</div>
+        <div class="feat-item">Real-Time Telemetry</div>
+        <div class="feat-item">Timed Performance Monitoring</div>
+        <div class="feat-item">Post-Assessment Analytics</div>
+      </div>
+
+    </div>
+
+    <div class="config-right">
+      <div class="form-card">
+
+        <div class="form-card-head">
+          <h2>Evaluation Parameters</h2>
+          <p>Define test scope and constraints</p>
+        </div>
+
+        <div class="field-row">
+
+          <div class="field-group">
+            <label>Subject</label>
+            <select [(ngModel)]="subject" (change)="onSubjectChange()">
+              <option value="Maths">Maths</option>
+              <option value="Science">Science</option>
+            </select>
           </div>
 
-          <div class="hero-copy">
-            <h1>
-              Assessment<br>
-              <span class="accent">Initialization</span>
-            </h1>
-            <p>
-              Configure evaluation parameters and begin controlled performance simulation.
-            </p>
-          </div>
-
-          <div class="feature-list">
-            <div class="feat-item">Adaptive Question Intelligence</div>
-            <div class="feat-item">Real-Time Telemetry</div>
-            <div class="feat-item">Timed Performance Monitoring</div>
-            <div class="feat-item">Post-Assessment Analytics</div>
+          <div class="field-group">
+            <label>Class Level</label>
+            <select [(ngModel)]="classLevel">
+              <option [value]="10">Class 10</option>
+              <option [value]="11">Class 11</option>
+              <option [value]="12">Class 12</option>
+            </select>
           </div>
 
         </div>
 
-        <!-- Right Panel -->
-        <div class="config-right">
-          <div class="form-card">
+        <div class="field-group">
+          <label>Chapter Scope (Optional)</label>
+          <select [(ngModel)]="chapter">
+            <option value="">Full Subject Coverage</option>
+            @for (ch of chapters; track ch) {
+              <option [value]="ch">{{ ch }}</option>
+            }
+          </select>
+        </div>
 
-            <div class="form-card-head">
-              <h2>Evaluation Parameters</h2>
-              <p>Define test scope and constraints</p>
-            </div>
+        <div class="field-row">
 
-            <div class="field-row">
+          <div class="field-group">
+            <label>Question Count</label>
+            <input type="number" [(ngModel)]="questionCount" min="5" max="50" />
+          </div>
 
-              <div class="field-group">
-                <label>Subject</label>
-                <select [(ngModel)]="subject" (change)="onSubjectChange()">
-                  <option value="Maths">Maths</option>
-                  <option value="Physics">Physics</option>
-                </select>
-              </div>
+          <div class="field-group">
+            <label>Time Limit (minutes)</label>
+            <input type="number" [(ngModel)]="timeLimit" min="5" max="180" />
+          </div>
 
-              <div class="field-group">
-                <label>Class Level</label>
-                <select [(ngModel)]="classLevel">
-                  <option [value]="10">Class 10</option>
-                  <option [value]="11">Class 11</option>
-                  <option [value]="12">Class 12</option>
-                </select>
-              </div>
+        </div>
 
-            </div>
+        <button class="start-btn" (click)="startTest()">
+          Initialize Assessment →
+        </button>
 
-            <div class="field-group">
-              <label>Chapter Scope (Optional)</label>
-              <select [(ngModel)]="chapter">
-                <option value="">Full Subject Coverage</option>
-                @for (ch of chapters; track ch) {
-                  <option [value]="ch">{{ ch }}</option>
-                }
-              </select>
-            </div>
+      </div>
+    </div>
 
-            <div class="field-row">
+  </div>
+}
 
-              <div class="field-group">
-                <label>Question Count</label>
-                <input type="number" [(ngModel)]="questionCount" min="5" max="50" />
-              </div>
+<!-- ========================================= -->
+<!-- EXAM MODE -->
+<!-- ========================================= -->
 
-              <div class="field-group">
-                <label>Time Limit (minutes)</label>
-                <input type="number" [(ngModel)]="timeLimit" min="5" max="180" />
-              </div>
+@else if (isTestStarted && !isTestFinished) {
 
-            </div>
+  <div class="exam-page">
 
-            <button class="start-btn" (click)="startTest()">
-              Initialize Assessment →
+    <header class="exam-topbar">
+      <div class="tb-left">
+        <div class="tb-brand">Assessment Session</div>
+        <div class="tb-subject">
+          {{ subject }} · Class {{ classLevel }}
+        </div>
+      </div>
+
+      <div class="tb-center">
+        <div class="progress-track">
+          <div class="progress-fill"
+            [style.width.%]="((currentQuestionIndex + 1) / questions.length) * 100">
+          </div>
+        </div>
+        <div class="progress-text">
+          {{ currentQuestionIndex + 1 }} / {{ questions.length }}
+        </div>
+      </div>
+
+      <div class="tb-right">
+        <div class="timer">
+          {{ formatTime(remainingTime) }}
+        </div>
+      </div>
+    </header>
+
+    <div class="exam-layout">
+
+      <aside class="sidebar">
+        <div class="sidebar-title">Navigation</div>
+
+        <div class="q-grid">
+          @for (q of questions; let i = $index; track i) {
+            <button
+              class="q-btn"
+              [class.active]="i === currentQuestionIndex"
+              [class.answered]="selectedAnswers[i] !== -1"
+              (click)="currentQuestionIndex = i">
+              {{ i + 1 }}
             </button>
+          }
+        </div>
+      </aside>
 
+      <main class="main-panel">
+
+        <div class="question-card">
+
+          <div class="question-header">
+            <span>Question {{ currentQuestionIndex + 1 }}</span>
           </div>
+
+          <p class="question-text">
+            {{ currentQuestion.question }}
+          </p>
+
+          <div class="options">
+            @for (option of currentQuestion.options; let i = $index; track i) {
+              <button
+                class="option"
+                [class.selected]="selectedAnswers[currentQuestionIndex] === i"
+                (click)="selectOption(i)">
+                <span class="opt-letter">
+                  {{ ['A','B','C','D'][i] }}
+                </span>
+                <span>{{ option }}</span>
+              </button>
+            }
+          </div>
+
         </div>
 
+        <div class="nav-controls">
+          <button (click)="goPrevious()" [disabled]="currentQuestionIndex === 0">
+            Previous
+          </button>
+
+          <button (click)="goNext()">
+            {{ currentQuestionIndex + 1 === questions.length ? 'Submit Assessment' : 'Next' }}
+          </button>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+}
+
+<!-- ========================================= -->
+<!-- RESULTS -->
+<!-- ========================================= -->
+
+@else if (isTestFinished) {
+
+  <div class="results-page">
+
+    <div class="result-hero">
+      <div class="accuracy">
+        <div class="acc-value">{{ accuracy }}%</div>
+        <div class="acc-label">Performance Score</div>
       </div>
+    </div>
+
+    <div class="result-stats">
+
+      <div class="stat-card">
+        <div class="stat-value">{{ score }}</div>
+        <div class="stat-label">Correct</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ questions.length - score }}</div>
+        <div class="stat-label">Incorrect</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ questions.length }}</div>
+        <div class="stat-label">Total</div>
+      </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- WEAK TOPICS -->
+    <!-- ========================= -->
+
+    @if (weakTopics.length > 0) {
+
+      <div class="weak-topics">
+        <h3>Topics to Improve</h3>
+
+        <div class="topic-list">
+          @for (topic of weakTopics; track topic) {
+            <span class="topic-pill">{{ topic }}</span>
+          }
+        </div>
+      </div>
+
     }
 
-    <!-- ========================================= -->
-    <!-- EXAM MODE -->
-    <!-- ========================================= -->
+    <!-- ========================= -->
+    <!-- QUESTION ANALYSIS -->
+    <!-- ========================= -->
 
-    @else if (isTestStarted && !isTestFinished) {
+    <div class="analysis-section">
 
-      <div class="exam-page">
+      <h3>Detailed Question Analysis</h3>
 
-        <header class="exam-topbar">
-          <div class="tb-left">
-            <div class="tb-brand">Assessment Session</div>
-            <div class="tb-subject">
-              {{ subject }} · Class {{ classLevel }}
-            </div>
-          </div>
+      <div class="analysis-list">
 
-          <div class="tb-center">
-            <div class="progress-track">
-              <div class="progress-fill"
-                [style.width.%]="((currentQuestionIndex + 1) / questions.length) * 100">
+        @for (res of detailedResults; let i = $index; track i) {
+
+          <div class="analysis-card"
+               [class.correct]="res.isCorrect"
+               [class.wrong]="!res.isCorrect">
+
+            <div class="analysis-header">
+              <div class="q-number">Q{{ i + 1 }}</div>
+
+              <div class="status"
+                   [class.correct]="res.isCorrect"
+                   [class.wrong]="!res.isCorrect">
+                {{ res.isCorrect ? 'Correct' : 'Incorrect' }}
               </div>
             </div>
-            <div class="progress-text">
-              {{ currentQuestionIndex + 1 }} / {{ questions.length }}
+
+            <div class="analysis-question">
+              {{ res.question }}
             </div>
-          </div>
 
-          <div class="tb-right">
-            <div class="timer">
-              {{ formatTime(remainingTime) }}
-            </div>
-          </div>
-        </header>
+            <div class="analysis-answers">
 
-        <div class="exam-layout">
+              <div class="answer-row">
+                <span class="label">Your Answer:</span>
+                <span class="value"
+                      [class.wrong]="!res.isCorrect">
+                  {{ ['A','B','C','D'][res.selectedAnswer] || 'Not Attempted' }}
+                </span>
+              </div>
 
-          <aside class="sidebar">
-            <div class="sidebar-title">Navigation</div>
+              <div class="answer-row">
+                <span class="label">Correct Answer:</span>
+                <span class="value correct">
+                  {{ res.correctOption }}
+                </span>
+              </div>
 
-            <div class="q-grid">
-              @for (q of questions; let i = $index; track i) {
-                <button
-                  class="q-btn"
-                  [class.active]="i === currentQuestionIndex"
-                  [class.answered]="selectedAnswers[i] !== -1"
-                  (click)="currentQuestionIndex = i">
-                  {{ i + 1 }}
-                </button>
+              @if (res.topic) {
+                <div class="answer-row">
+                  <span class="label">Topic:</span>
+                  <span class="value topic">{{ res.topic }}</span>
+                </div>
               }
+
             </div>
-          </aside>
 
-          <main class="main-panel">
-
-            <div class="question-card">
-
-              <div class="question-header">
-                <span>Question {{ currentQuestionIndex + 1 }}</span>
+            @if (res.explanation) {
+              <div class="explanation" >
+                {{res.explanation}}
               </div>
+            }
 
-              <p class="question-text">
-                {{ currentQuestion.question }}
-              </p>
+          </div>
 
-              <div class="options">
-                @for (option of currentQuestion.options; let i = $index; track i) {
-                  <button
-                    class="option"
-                    [class.selected]="selectedAnswers[currentQuestionIndex] === i"
-                    (click)="selectOption(i)">
-                    <span class="opt-letter">
-                      {{ ['A','B','C','D'][i] }}
-                    </span>
-                    <span>{{ option }}</span>
-                  </button>
-                }
-              </div>
-
-            </div>
-
-            <div class="nav-controls">
-              <button (click)="goPrevious()" [disabled]="currentQuestionIndex === 0">
-                Previous
-              </button>
-
-              <button (click)="goNext()">
-                {{ currentQuestionIndex + 1 === questions.length ? 'Submit Assessment' : 'Next' }}
-              </button>
-            </div>
-
-          </main>
-
-        </div>
+        }
 
       </div>
-    }
 
-    <!-- ========================================= -->
-    <!-- RESULTS -->
-    <!-- ========================================= -->
+    </div>
 
-    @else if (isTestFinished) {
+    <div class="res-actions">
+      <button (click)="startTest()">Retake</button>
+      <button (click)="resetTest()">Dashboard</button>
+    </div>
 
-      <div class="results-page">
+  </div>
 
-        <div class="result-hero">
-          <div class="accuracy">
-            <div class="acc-value">{{ accuracy }}%</div>
-            <div class="acc-label">Performance Score</div>
-          </div>
-        </div>
+}
 
-        <div class="result-stats">
+  </div>
+</div>
 
-          <div class="stat-card">
-            <div class="stat-value">{{ score }}</div>
-            <div class="stat-label">Correct</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-value">{{ questions.length - score }}</div>
-            <div class="stat-label">Incorrect</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-value">{{ questions.length }}</div>
-            <div class="stat-label">Total</div>
-          </div>
-
-        </div>
-
-        <div class="res-actions">
-          <button (click)="startTest()">Retake</button>
-          <button (click)="resetTest()">Dashboard</button>
-        </div>
-
-      </div>
-    }
 
   </div>
 </div>

@@ -2,18 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/* =========================
+   RESPONSE TYPE (IMPORTANT)
+========================= */
+export interface ChatResponse {
+  reply: string;
+  structured?: any;
+  metadata?: any;
+  session_id?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
   private API_URL = 'http://localhost:8000/chat';
+  private LEARN_URL = 'http://localhost:8000/learn';
   private STREAM_URL = 'http://localhost:8000/chat/stream';
   private RESET_URL = 'http://localhost:8000/chat/reset';
 
   private abortController: AbortController | null = null;
 
-  // 🔑 SESSION MANAGEMENT
   private sessionId: string;
 
   constructor(private http: HttpClient) {
@@ -21,8 +31,8 @@ export class ChatService {
   }
 
   /* =========================
-     SESSION ID MANAGEMENT
-     ========================= */
+     SESSION ID
+  ========================= */
   private getOrCreateSessionId(): string {
     let sessionId = localStorage.getItem('stepwise_session_id');
 
@@ -44,15 +54,8 @@ export class ChatService {
   }
 
   /* =========================
-     GENERIC SEND (NEW)
-     This supports:
-     - message
-     - diagnosis
-     - clarification
-     - verification_answers
-     - reset
-     - board
-     ========================= */
+     GENERIC SEND
+  ========================= */
   send(payload: any): Observable<any> {
     return this.http.post<any>(this.API_URL, {
       board: 'CBSE',
@@ -63,16 +66,16 @@ export class ChatService {
   }
 
   /* =========================
-     LEGACY SEND MESSAGE (KEEP)
-     ========================= */
+     NORMAL CHAT (/chat)
+  ========================= */
   sendMessage(
     message: string,
     board: string = 'CBSE',
     reset: boolean = false,
     diagnosis?: string
-  ): Observable<{ reply: string; session_id?: number; metadata?: any }> {
+  ): Observable<ChatResponse> {
 
-    return this.http.post<{ reply: string; session_id?: number; metadata?: any }>(
+    return this.http.post<ChatResponse>(
       this.API_URL,
       {
         message,
@@ -85,8 +88,28 @@ export class ChatService {
   }
 
   /* =========================
+     LEARNING MODE (/learn)
+  ========================= */
+  learnMessage(
+    message: string,
+    board: string,
+    topic: string
+  ): Observable<ChatResponse> {
+
+    return this.http.post<ChatResponse>(
+      this.LEARN_URL,
+      {
+        message,
+        board,
+        topic,
+        session_id: this.sessionId
+      }
+    );
+  }
+
+  /* =========================
      RESET SESSION
-     ========================= */
+  ========================= */
   resetSession(): Observable<any> {
 
     const resetObs = this.http.post(this.RESET_URL, {
@@ -105,8 +128,8 @@ export class ChatService {
   }
 
   /* =========================
-     STREAMING CHAT
-     ========================= */
+     STREAMING
+  ========================= */
   async streamMessage(
     message: string,
     onChunk: (chunk: string) => void,
@@ -130,9 +153,7 @@ export class ChatService {
         signal: this.abortController.signal
       });
 
-      if (!response.body) {
-        throw new Error('No response body');
-      }
+      if (!response.body) throw new Error('No response body');
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -157,9 +178,6 @@ export class ChatService {
     }
   }
 
-  /* =========================
-     STOP STREAMING
-     ========================= */
   stopStreaming() {
     if (this.abortController) {
       this.abortController.abort();
@@ -168,9 +186,39 @@ export class ChatService {
   }
 
   /* =========================
-     METADATA
-     ========================= */
-  getSessionMetadata(): string {
-    return this.sessionId;
+     PRACTICE
+  ========================= */
+  generatePracticeQuestion(topic: string, confidence: number) {
+    return this.http.post<any>(
+      'http://localhost:8000/practice/generate',
+      {
+        topic,
+        confidence
+      }
+    );
+  }
+
+problemsMessage(message: string, board: string) {
+  return this.http.post<ChatResponse>('http://localhost:8000/problems', {
+    message,
+    board
+  });
+}
+
+  evaluatePractice(
+    question: string,
+    correctAnswer: string,
+    studentAnswer: string,
+    solutionSteps: string[]
+  ) {
+    return this.http.post<any>(
+      'http://localhost:8000/practice/evaluate',
+      {
+        question,
+        correct_answer: correctAnswer,
+        student_answer: studentAnswer,
+        solution_steps: solutionSteps
+      }
+    );
   }
 }

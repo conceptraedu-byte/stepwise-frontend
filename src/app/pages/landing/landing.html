@@ -1,0 +1,317 @@
+<div class="landing">
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="neural-grid"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-icon">⚡</span>
+        <span>AI-Powered Learning Platform</span>
+      </div>
+
+      <h1 class="hero-title">
+        Train Like It's the Real Exam
+        <span class="gradient-span">Every Single Time</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Conceptra helps students practice answers, receive structured AI 
+        evaluation, and track real performance improvement with measurable results.
+      </p>
+
+      <div class="hero-cta">
+        <button class="btn btn-primary"  routerLink="/tutor"
+      routerLinkActive="active">
+          <span class="btn-icon">✨</span>
+          Start Free – 10 Credits
+        </button>
+        <button class="btn btn-secondary" routerLink="/dashboard" routerLinkActive="active">
+          <span class="btn-icon">📖</span>
+          Learn How It Works
+        </button>
+      </div>
+
+      <div class="trust-badges">
+        <div class="trust-item">
+          <span class="trust-icon">✓</span>
+          Trusted by serious learners
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">✓</span>
+          Structured AI evaluation
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">✓</span>
+          Real progress tracking
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHO IT'S FOR SECTION ===== -->
+  <section class="section users-section">
+    <div class="section-header">
+      <h2>Who Should Use Conceptra</h2>
+      <p class="section-subtitle">Designed for every serious learner</p>
+    </div>
+
+    <div class="users-grid">
+      <div class="user-segment-card">
+        <div class="segment-icon">📚</div>
+        <h3>School Students</h3>
+        <p>
+          Practice writing structured answers for board exams and 
+          improve clarity in concepts with real feedback.
+        </p>
+        <div class="card-accent"></div>
+      </div>
+
+      <div class="user-segment-card">
+        <div class="segment-icon">🏆</div>
+        <h3>Competitive Exam Aspirants</h3>
+        <p>
+          Simulate exam-like questions and get AI feedback to 
+          refine your responses and boost scores.
+        </p>
+        <div class="card-accent"></div>
+      </div>
+
+      <div class="user-segment-card">
+        <div class="segment-icon">💼</div>
+        <h3>College & University Students</h3>
+        <p>
+          Improve structured thinking and communication 
+          through guided practice and AI coaching.
+        </p>
+        <div class="card-accent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY STUDENTS FAIL SECTION ===== -->
+  <section class="section problems-section">
+    <div class="section-header">
+      <h2>Why Most Students Don't Improve</h2>
+      <p class="section-subtitle">The gaps Conceptra fills</p>
+    </div>
+
+    <div class="problems-grid">
+      <div class="problem-card">
+        <div class="problem-icon">❌</div>
+        <h3>No Structured Feedback</h3>
+        <p>
+          Students practice but rarely receive detailed, actionable evaluation 
+          on what they're actually doing wrong.
+        </p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">📉</div>
+        <h3>No Performance Data</h3>
+        <p>
+          Without analytics and dashboards, it's incredibly hard to identify 
+          weak areas and track actual progress.
+        </p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🔄</div>
+        <h3>No Improvement Tracking</h3>
+        <p>
+          Students repeat the same mistakes without realizing patterns, 
+          wasting months of precious preparation time.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS SECTION ===== -->
+  <section class="section how-section">
+    <div class="section-header">
+      <h2>How Conceptra Works</h2>
+      <p class="section-subtitle">Three simple steps to mastery</p>
+    </div>
+
+    <div class="workflow-steps">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-icon">📝</div>
+        <h3>Answer Questions</h3>
+        <p>Practice real questions in structured answer format designed for exams.</p>
+        <div class="step-line"></div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI Evaluation</h3>
+        <p>Receive instant feedback on clarity, logic, structure, and conceptual depth.</p>
+        <div class="step-line"></div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-num">3</div>
+        <div class="step-icon">📊</div>
+        <h3>Track Progress</h3>
+        <p>Analyze improvement patterns through your personalized dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING SECTION ===== -->
+  <section class="section pricing-section">
+    <div class="section-header">
+      <h2>Simple, Transparent Pricing</h2>
+      <p class="section-subtitle">Choose what works for you</p>
+    </div>
+
+    <div class="pricing-container">
+      @for (plan of plans; track plan.name) {
+
+        <div 
+          class="pricing-card"
+          [class.pricing-highlight]="plan.name === 'Pro'"
+          [class.pricing-enterprise]="plan.name === 'Enterprise'"
+        >
+          @if (plan.name === 'Pro') {
+            <div class="pricing-badge">Most Popular</div>
+          }
+          @if (plan.name === 'Enterprise') {
+            <div class="pricing-badge badge-enterprise">Custom Plans</div>
+          }
+
+          <h3 class="pricing-title">{{ plan.name }}</h3>
+
+          <div class="pricing-amount">
+            @if (plan.price === 0) {
+              <span class="price-text">Basic</span>
+            } @else {
+              <span class="price-value">₹{{ plan.price }}</span>
+              <span class="price-period">/month</span>
+            }
+          </div>
+
+          <!-- <p class="pricing-description">{{ plan.description }}</p> -->
+
+          <ul class="features-list">
+            @for (feature of plan.features; track feature) {
+              <li class="feature-item">
+                <span class="feature-icon">✓</span>
+                <span>{{ feature }}</span>
+              </li>
+            }
+          </ul>
+
+          <!-- BUTTON LOGIC -->
+          @if (!isLoggedIn) {
+
+            @if (plan.price === 0) {
+              <button class="btn btn-secondary btn-block" routerLink="/register">
+                Start Free
+              </button>
+            } @else {
+              <button class="btn btn-primary btn-block" routerLink="/register">
+                Upgrade to {{ plan.name }}
+              </button>
+            }
+
+          } @else {
+
+            @if (currentPlan === plan.name.toLowerCase()) {
+              <button class="btn btn-secondary btn-block" disabled>
+                ✓ Current Plan
+              </button>
+            } @else if (canUpgrade) {
+              <button class="btn btn-primary btn-block" (click)="upgradeToPro()">
+                Upgrade to {{ plan.name }}
+              </button>
+            } @else {
+              <button class="btn btn-secondary btn-block" disabled>
+                Not Available
+              </button>
+            }
+
+          }
+
+        </div>
+
+      }
+    </div>
+
+    <p class="pricing-note">
+      All plans include AI evaluation and progress tracking. No credit card required for free tier.
+    </p>
+  </section>
+
+  <!-- ===== FEATURES HIGHLIGHT SECTION ===== -->
+  <section class="section features-section">
+    <div class="section-header">
+      <h2>Why Conceptra Works</h2>
+      <p class="section-subtitle">Built for real learning outcomes</p>
+    </div>
+
+    <div class="features-showcase">
+      <div class="feature-showcase-card">
+        <div class="showcase-icon">🧠</div>
+        <h4>Structured Thinking</h4>
+        <p>Learn to organize your thoughts and explain concepts logically.</p>
+      </div>
+
+      <div class="feature-showcase-card">
+        <div class="showcase-icon">⚡</div>
+        <h4>Instant Feedback</h4>
+        <p>Get AI-powered evaluation within seconds, not days.</p>
+      </div>
+
+      <div class="feature-showcase-card">
+        <div class="showcase-icon">📈</div>
+        <h4>Progress Metrics</h4>
+        <p>Track improvement through detailed analytics and insights.</p>
+      </div>
+
+      <div class="feature-showcase-card">
+        <div class="showcase-icon">🎯</div>
+        <h4>Personalized Learning</h4>
+        <p>Focus on weak areas with AI-recommended practice topics.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA SECTION ===== -->
+  <section class="section cta-final">
+    <div class="cta-bg">
+      <div class="cta-glow"></div>
+    </div>
+
+    <div class="cta-content">
+      <h2>Stop Guessing Your Preparation</h2>
+      <p>
+        Start training with structured evaluation and measurable progress. 
+        Join thousands of students improving their scores today.
+      </p>
+
+      <div class="cta-buttons">
+        <button class="btn btn-primary btn-large">
+          <span class="btn-icon">🚀</span>
+          Start Your Training Now
+        </button>
+        <button class="btn btn-secondary btn-large" routerLink="/about">
+          <span class="btn-icon">📖</span>
+          Learn More
+        </button>
+      </div>
+
+      <p class="cta-guarantee">
+        ✨ 10 free credits • No credit card required • Cancel anytime
+      </p>
+    </div>
+  </section>
+
+</div>

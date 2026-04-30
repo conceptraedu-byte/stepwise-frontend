@@ -1,59 +1,97 @@
-<div class="auth-wrapper">
+<div class="auth-container">
 
-  <!-- Left Branding Section -->
-  <div class="auth-hero">
-    <div class="hero-content">
-      <h1>Master Your Concepts.</h1>
-      <p>
-        Structured learning. Real mock exams.
-        Designed for serious students.
-      </p>
-    </div>
+  <!-- animated background -->
+  <div class="animated-bg"></div>
+
+  <!-- floating particles -->
+  <div class="particles">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
 
-  <!-- Right Login Card -->
-  <div class="auth-card">
+  <div class="auth-layout">
 
-    <div class="card-header">
-      <h2>Welcome Back</h2>
-      <p>Login to continue your preparation</p>
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+
+      <div class="brand">
+        <h1>StepWise AI</h1>
+        <p>Structured learning powered by intelligence</p>
+      </div>
+
+      <div class="hero-text">
+        <h2>
+          Master Concepts.<br>
+          Dominate Exams.
+        </h2>
+
+        <p>
+          AI powered explanations, structured revision,
+          and real board-style mock exams designed
+          for serious students.
+        </p>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <input 
-        type="email" 
-        [(ngModel)]="email" 
-        required
-        placeholder=" " />
-      <label>Email Address</label>
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+
+      <div class="login-card">
+
+        <div class="card-header">
+          <h3>Welcome Back</h3>
+          <p>Login to continue your preparation</p>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <input
+            type="email"
+            [(ngModel)]="email"
+            required
+            placeholder=" "
+          >
+          <label>Email Address</label>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <input
+            type="password"
+            [(ngModel)]="password"
+            required
+            placeholder=" "
+          >
+          <label>Password</label>
+        </div>
+
+        <!-- LOGIN BUTTON -->
+        <button
+          class="login-btn"
+          [disabled]="!email || !password"
+          (click)="login()">
+
+          Login
+
+        </button>
+
+        <p class="register-link">
+          Don’t have an account?
+          <a routerLink="/register">Create one</a>
+        </p>
+
+        <p class="error-msg" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </p>
+
+      </div>
+
     </div>
-
-    <div class="form-group">
-      <input 
-        type="password" 
-        [(ngModel)]="password"
-        required
-        placeholder=" " />
-      <label>Password</label>
-    </div>
-
-    <button 
-      class="login-btn"
-      [disabled]="!email || !password"
-      (click)="login()">
-
-      Login
-    </button>
-
-    <p class="register-link">
-  Don’t have an account?
-  <a routerLink="/register">Create one</a>
-</p>
-
-
-    <p class="error-msg" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </p>
 
   </div>
+
 </div>

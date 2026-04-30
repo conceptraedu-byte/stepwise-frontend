@@ -1,44 +1,51 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TUTORBOT PREMIUM DASHBOARD - TEMPLATE
+     ═══════════════════════════════════════════════════════════════ -->
+
 <div class="dashboard-wrapper">
 
-  <!-- ── TOPBAR ────────────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────────────────────
+       TOPBAR / HEADER
+       ─────────────────────────────────────────────────────────── -->
   <div class="topbar">
     <div class="topbar-left">
-      <div class="product-label">TutorBot</div>
+      <div class="product-label">Conceptra</div>
       <h1>My Dashboard</h1>
     </div>
     <div class="topbar-right">
-      <div class="streak-pill">
-        <span class="flame">🔥</span> {{ streakDays }}-day streak
+      <div class="streak-badge" *ngIf="streakDays > 0">
+        <span class="flame">🔥</span>
+        <span>{{ streakDays }}-day streak</span>
       </div>
-      <div class="avatar">{{ userInitials }}</div>
     </div>
   </div>
 
-  <!-- ── HERO ──────────────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────────────────────
+       HERO SECTION - PERFORMANCE OVERVIEW
+       ─────────────────────────────────────────────────────────── -->
   <div class="hero-section">
-    <div class="hero-meta">
+    <div class="hero-content">
       <div class="hero-tag">
-        <span class="hero-dot"></span>Performance Overview
+        Performance Overview
       </div>
-      <h2>{{ heroHeading }}</h2>
+      <h2 class="hero-meta">{{ heroHeading }}</h2>
       <div class="status-badge" [ngClass]="statusClass">
         <span class="pulse-dot"></span>
         {{ statusMessage }}
       </div>
     </div>
 
-    <!-- SVG Radial Ring -->
-    <div class="score-wrap">
+    <div class="score-section">
       <div class="radial-ring">
-        <svg viewBox="0 0 120 120" width="120" height="120">
+        <svg viewBox="0 0 180 180" width="180" height="180">
           <defs>
-            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#00e5a0"/>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00f5d4"/>
               <stop offset="100%" stop-color="#0ea5e9"/>
             </linearGradient>
           </defs>
-          <circle class="ring-bg"   cx="60" cy="60" r="50"/>
-          <circle class="ring-fill" cx="60" cy="60" r="50"
+          <circle class="ring-bg" cx="90" cy="90" r="75"/>
+          <circle class="ring-fill" cx="90" cy="90" r="75"
                   [style.stroke-dashoffset]="ringOffset"/>
         </svg>
         <div class="score-label">
@@ -50,31 +57,126 @@
     </div>
   </div>
 
-  <!-- ── KPI GRID ───────────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────────────────────
+       AI INSIGHTS BLOCK
+       ─────────────────────────────────────────────────────────── -->
+  <div class="card-block insights-block">
+    <div class="block-header">
+      <h3>AI Learning Insights</h3>
+      <div class="block-badge">Smart Analysis</div>
+    </div>
+
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-title">Learning Velocity</div>
+        <div class="insight-value">
+          {{ learningVelocity > 0 ? '+' : '' }}{{ learningVelocity }}%
+        </div>
+        <div class="insight-desc">Change in accuracy across recent tests</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Strongest Topic</div>
+        <div class="insight-value">
+          {{ strongestTopic || '—' }}
+        </div>
+        <div class="insight-desc">Your most consistent performance area</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Difficulty Strength</div>
+        <div class="difficulty-bars">
+          <div class="difficulty-row">
+            <span>Easy</span>
+            <div class="diff-bar">
+              <div class="diff-fill"
+                   [style.width.%]="difficultyStrength['easy'] || 0">
+              </div>
+            </div>
+            <span>{{ difficultyStrength['easy'] || 0 }}%</span>
+          </div>
+
+          <div class="difficulty-row">
+            <span>Medium</span>
+            <div class="diff-bar">
+              <div class="diff-fill"
+                   [style.width.%]="difficultyStrength['medium'] || 0">
+              </div>
+            </div>
+            <span>{{ difficultyStrength['medium'] || 0 }}%</span>
+          </div>
+
+          <div class="difficulty-row">
+            <span>Hard</span>
+            <div class="diff-bar">
+              <div class="diff-fill"
+                   [style.width.%]="difficultyStrength['hard'] || 0">
+              </div>
+            </div>
+            <span>{{ difficultyStrength['hard'] || 0 }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────
+       LEARNING INTELLIGENCE
+       ─────────────────────────────────────────────────────────── -->
+  <div class="card-block intelligence-card">
+    <div class="block-header">
+      <h3>Learning Intelligence</h3>
+      <div class="block-badge">AI Recommendation</div>
+    </div>
+
+    <div class="intelligence-body">
+      <div class="intelligence-topic">
+        <div class="intelligence-label">Recommended Topic</div>
+        <div class="intelligence-value">
+          {{ recommendedTopic || 'No recommendation yet' }}
+        </div>
+      </div>
+
+      <div class="intelligence-reason" *ngIf="recommendedTopic">
+        Based on recent performance in this topic.
+      </div>
+
+      <button
+        *ngIf="recommendedTopic"
+        class="action-btn"
+        (click)="practiceTopic(recommendedTopic)">
+        Start Practice →
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────
+       KPI GRID
+       ─────────────────────────────────────────────────────────── -->
   <div class="kpi-grid">
 
-    <div class="kpi-card kpi-blue">
+    <div class="kpi-card accent-blue">
       <div class="kpi-icon">📝</div>
       <div class="kpi-title">Total Tests</div>
       <div class="kpi-value">{{ totalTests }}</div>
       <div class="kpi-sub">+{{ testsThisWeek }} this week</div>
     </div>
 
-    <div class="kpi-card kpi-green">
+    <div class="kpi-card accent-green">
       <div class="kpi-icon">🏆</div>
       <div class="kpi-title">Best Score</div>
       <div class="kpi-value">{{ bestScore }}%</div>
       <div class="kpi-sub">{{ bestScoreContext }}</div>
     </div>
 
-    <div class="kpi-card kpi-amber">
+    <div class="kpi-card accent-yellow">
       <div class="kpi-icon">📌</div>
       <div class="kpi-title">Last Score</div>
       <div class="kpi-value">{{ lastScore }}%</div>
       <div class="kpi-sub">{{ lastScoreContext }}</div>
     </div>
 
-    <div class="kpi-card kpi-red">
+    <div class="kpi-card accent-red">
       <div class="kpi-icon">📈</div>
       <div class="kpi-title">Improvement</div>
       <div class="kpi-value"
@@ -87,7 +189,92 @@
 
   </div>
 
-  <!-- ── ACCURACY TREND ─────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────────────────────
+       AI GUIDANCE
+       ─────────────────────────────────────────────────────────── -->
+  <div class="card-block">
+
+    <div class="block-header">
+      <h3>AI Guidance</h3>
+      <div class="block-badge">Personalized Suggestions</div>
+    </div>
+
+    <div class="guidance-grid">
+
+      <!-- Recommended Practice -->
+      <div class="guidance-card primary" *ngIf="recommendedTopic">
+
+        <div class="guidance-title">Recommended Practice</div>
+
+        <div class="guidance-value">
+          {{ recommendedTopic }}
+        </div>
+
+        <div class="guidance-desc">
+          Based on your recent performance
+        </div>
+
+        <button class="action-btn" (click)="practiceTopic(recommendedTopic)">
+          Practice Now →
+        </button>
+
+      </div>
+
+      <!-- Weak Topics -->
+      <div class="guidance-card">
+
+        <div class="guidance-title">Weak Topics</div>
+
+        <div *ngIf="weakTopics.length === 0" class="guidance-empty">
+          No weak topics detected
+        </div>
+
+        <div class="topic-pills">
+
+          <div
+            *ngFor="let topic of weakTopics"
+            class="topic-pill weak"
+            (click)="practiceTopic(topic)"
+            style="cursor: pointer;">
+
+            {{ topic }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Recent Topics -->
+      <div class="guidance-card">
+
+        <div class="guidance-title">Recent Topics</div>
+
+        <div *ngIf="recentTopics.length === 0" class="guidance-empty">
+          Start learning to build history
+        </div>
+
+        <div class="topic-pills">
+
+          <div
+            *ngFor="let topic of recentTopics"
+            class="topic-pill">
+
+            {{ topic }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────
+       ACCURACY TREND CHART
+       ─────────────────────────────────────────────────────────── -->
   <div class="card-block">
     <div class="block-header">
       <h3>Accuracy Trend</h3>
@@ -115,7 +302,9 @@
     </div>
   </div>
 
-  <!-- ── TOPIC MASTERY ──────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────────────────────
+       TOPIC MASTERY
+       ─────────────────────────────────────────────────────────── -->
   <div class="card-block">
     <div class="block-header">
       <h3>Topic Mastery</h3>
@@ -140,9 +329,9 @@
         </div>
       </div>
       <div class="topic-percent"
-           [class.weak-text]="topicMastery[topic] < 40"
-           [class.medium-text]="topicMastery[topic] >= 40 && topicMastery[topic] < 70"
-           [class.strong-text]="topicMastery[topic] >= 70">
+           [class.weak]="topicMastery[topic] < 40"
+           [class.medium]="topicMastery[topic] >= 40 && topicMastery[topic] < 70"
+           [class.strong]="topicMastery[topic] >= 70">
         {{ topicMastery[topic] }}%
       </div>
     </div>

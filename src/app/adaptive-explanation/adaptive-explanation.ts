@@ -12,10 +12,13 @@ type TeachingDepth = 'simple' | 'board' | 'advanced';
 })
 export class AdaptiveExplanationComponent {
 
+
+  
   @Input() data: any;
 
   @Input() currentDepth: TeachingDepth = 'board';
-
+  @Input() isLoading = false
+  showDerivation = false;
   @Output() practice = new EventEmitter<void>();
   @Output() chat = new EventEmitter<void>();
 
@@ -26,9 +29,30 @@ export class AdaptiveExplanationComponent {
   // UI ACTIONS
   // =========================
 
-  selectDifficulty(level: TeachingDepth) {
-    this.difficultyChange.emit(level);
+   selectDifficulty(level: TeachingDepth) {
+
+  console.log("Parent received difficulty:", level)
+
+    this.difficultyChange.emit(level)
   }
+
+
+
+
+
+
+  onDifficultyClick(level: TeachingDepth) {
+
+  console.log("Difficulty clicked:", level);
+
+  this.difficultyChange.emit(level);
+
+}
+
+toggleDerivation() {
+  this.showDerivation = !this.showDerivation;
+}
+
 
   explainSimpler() {
     this.simplify.emit();

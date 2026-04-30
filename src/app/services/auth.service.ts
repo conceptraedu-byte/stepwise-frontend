@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
+import { BillingService } from './billing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,10 @@ export class AuthService {
   private userSubject = new BehaviorSubject<any>(this.getStoredUser());
   user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private billing: BillingService
+  ) {}
 
   /* -------------------------
      PRIVATE HELPERS
@@ -28,16 +32,28 @@ export class AuthService {
   --------------------------*/
 
   login(email: string, password: string) {
+
     return this.http.post<any>(`${this.baseUrl}/auth/login`, {
       email,
       password
     }).pipe(
+
       tap(response => {
+
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('user', JSON.stringify(response.user));
+
         this.userSubject.next(response.user);
+
+        // 🔥 refresh billing after login
+        setTimeout(() => {
+          this.billing.refreshBilling();
+        }, 200);
+
       })
+
     );
+
   }
 
   /* -------------------------
@@ -45,14 +61,26 @@ export class AuthService {
   --------------------------*/
 
   register(data: any) {
+
     return this.http.post<any>(`${this.baseUrl}/auth/register`, data)
       .pipe(
+
         tap(response => {
-          localStorage.setItem('token', response.access_token);
+
+          localStorage.setItem('access_token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
+
           this.userSubject.next(response.user);
+
+          // 🔥 refresh billing after signup
+          setTimeout(() => {
+            this.billing.refreshBilling();
+          }, 200);
+
         })
+
       );
+
   }
 
   /* -------------------------
@@ -60,36 +88,53 @@ export class AuthService {
   --------------------------*/
 
   logout() {
-    localStorage.removeItem('token');
+
+    localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+
     this.userSubject.next(null);
+
   }
 
+  /* -------------------------
+     INITIALIZE AUTH
+  --------------------------*/
+
   initializeAuth() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
 
-  this.http.get<any>(`${this.baseUrl}/auth/me`)
-    .subscribe({
-      next: (user) => {
-        this.userSubject.next(user);
-      },
-      error: () => {
-        this.logout(); // token invalid or expired
-      }
-    });
-}
+    const token = localStorage.getItem('access_token');
+    if (!token) return;
 
+    this.http.get<any>(`${this.baseUrl}/auth/me`)
+      .subscribe({
+
+        next: (user) => {
+
+          this.userSubject.next(user);
+
+          // 🔥 refresh billing when app loads
+          this.billing.refreshBilling();
+
+        },
+
+        error: () => {
+          this.logout();
+        }
+
+      });
+
+  }
 
   /* -------------------------
      HELPERS
   --------------------------*/
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('access_token');
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
   }
+
 }

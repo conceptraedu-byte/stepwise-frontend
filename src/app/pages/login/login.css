@@ -1,126 +1,292 @@
-/* ===== Layout ===== */
+/* ================================
+GLOBAL
+================================ */
 
-.auth-wrapper {
-  display: flex;
-  height: 100vh;
-  font-family: 'Inter', sans-serif;
+.auth-container{
+height:100vh;
+width:100%;
+background:#020617;
+color:white;
+font-family:Inter, sans-serif;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+position:relative;
 }
 
-/* ===== Left Hero ===== */
+/* ================================
+ANIMATED BACKGROUND
+================================ */
 
-.auth-hero {
-  flex: 1;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px;
+.animated-bg{
+position:absolute;
+width:160%;
+height:160%;
+background:
+radial-gradient(circle at 20% 20%, rgba(59,130,246,.25), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(37,99,235,.25), transparent 40%),
+radial-gradient(circle at 50% 50%, rgba(59,130,246,.15), transparent 50%);
+animation:bgMove 18s linear infinite;
+filter:blur(80px);
 }
 
-.hero-content h1 {
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 20px;
+@keyframes bgMove{
+0%{transform:rotate(0deg) scale(1)}
+50%{transform:rotate(180deg) scale(1.1)}
+100%{transform:rotate(360deg) scale(1)}
 }
 
-.hero-content p {
-  font-size: 18px;
-  color: #cbd5e1;
-  max-width: 400px;
+/* ================================
+PARTICLES
+================================ */
+
+.particles span{
+position:absolute;
+display:block;
+width:6px;
+height:6px;
+background:#3b82f6;
+border-radius:50%;
+opacity:.6;
+animation:float 10s linear infinite;
 }
 
-/* ===== Right Card ===== */
+.particles span:nth-child(1){left:10%;top:80%;animation-delay:0s}
+.particles span:nth-child(2){left:30%;top:60%;animation-delay:2s}
+.particles span:nth-child(3){left:50%;top:90%;animation-delay:4s}
+.particles span:nth-child(4){left:70%;top:70%;animation-delay:6s}
+.particles span:nth-child(5){left:90%;top:85%;animation-delay:8s}
 
-.auth-card {
-  flex: 1;
-  background: #f8fafc;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px;
+@keyframes float{
+0%{transform:translateY(0)}
+100%{transform:translateY(-100vh)}
 }
 
-.card-header h2 {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 6px;
+/* ================================
+LAYOUT
+================================ */
+
+.auth-layout{
+display:flex;
+width:100%;
+max-width:1200px;
+height:720px;
+z-index:2;
 }
 
-.card-header p {
-  color: #64748b;
-  margin-bottom: 40px;
+/* ================================
+LEFT PANEL
+================================ */
+
+.auth-left{
+flex:1;
+padding:80px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+background:
+linear-gradient(135deg,#0f172a,#020617);
+border-right:1px solid rgba(255,255,255,.06);
 }
 
-/* ===== Floating Input ===== */
-
-.form-group {
-  position: relative;
-  margin-bottom: 30px;
+.brand h1{
+font-size:26px;
+color:#60a5fa;
+margin-bottom:6px;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 16px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 16px;
-  outline: none;
-  background: white;
-  transition: 0.3s;
+.brand p{
+font-size:14px;
+color:#94a3b8;
+margin-bottom:60px;
 }
 
-.form-group input:focus {
-  border-color: #2563eb;
+.hero-text h2{
+font-size:46px;
+line-height:1.2;
+margin-bottom:20px;
 }
 
-.form-group label {
-  position: absolute;
-  left: 12px;
-  top: 16px;
-  color: #64748b;
-  font-size: 14px;
-  pointer-events: none;
-  transition: 0.2s ease;
-  background: white;
-  padding: 0 4px;
+.hero-text p{
+font-size:18px;
+color:#cbd5f5;
+max-width:420px;
+line-height:1.6;
+}
+
+/* ================================
+RIGHT PANEL
+================================ */
+
+.auth-right{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* ================================
+LOGIN CARD
+================================ */
+
+.login-card{
+width:420px;
+padding:50px 40px;
+border-radius:18px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,.08);
+box-shadow:
+0 30px 80px rgba(0,0,0,.7),
+0 0 50px rgba(59,130,246,.15);
+}
+
+/* ================================
+HEADER
+================================ */
+
+.card-header h3{
+font-size:28px;
+margin-bottom:6px;
+}
+
+.card-header p{
+color:#94a3b8;
+margin-bottom:35px;
+}
+
+/* ================================
+FORM
+================================ */
+
+.form-group{
+position:relative;
+margin-bottom:28px;
+}
+
+.form-group input{
+width:100%;
+padding:16px 14px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.08);
+background:rgba(255,255,255,.04);
+color:white;
+font-size:15px;
+outline:none;
+transition:.25s;
+}
+
+.form-group input:focus{
+border-color:#3b82f6;
+box-shadow:
+0 0 0 1px #3b82f6,
+0 0 20px rgba(59,130,246,.4);
+}
+
+.form-group label{
+position:absolute;
+left:14px;
+top:16px;
+font-size:13px;
+color:#94a3b8;
+pointer-events:none;
+transition:.2s;
+background:#020617;
+padding:0 6px;
 }
 
 .form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
-  top: -8px;
-  font-size: 12px;
-  color: #2563eb;
+.form-group input:not(:placeholder-shown)+label{
+top:-8px;
+font-size:11px;
+color:#60a5fa;
 }
 
-/* ===== Button ===== */
+/* ================================
+BUTTON
+================================ */
 
-.login-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 8px;
-  border: none;
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+.login-btn{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:none;
+font-weight:600;
+font-size:15px;
+background:linear-gradient(90deg,#3b82f6,#2563eb);
+color:white;
+cursor:pointer;
+transition:.25s;
+box-shadow:0 8px 25px rgba(59,130,246,.5);
 }
 
-.login-btn:hover {
-  background: #1d4ed8;
+.login-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 15px 40px rgba(59,130,246,.7);
 }
 
-.login-btn:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
+.login-btn:disabled{
+background:#334155;
+box-shadow:none;
+cursor:not-allowed;
 }
 
-/* ===== Error ===== */
+/* ================================
+LINK
+================================ */
 
-.error-msg {
-  margin-top: 15px;
-  color: #dc2626;
-  font-size: 14px;
+.register-link{
+margin-top:18px;
+font-size:14px;
+color:#94a3b8;
+text-align:center;
+}
+
+.register-link a{
+color:#60a5fa;
+text-decoration:none;
+font-weight:500;
+}
+
+.register-link a:hover{
+text-decoration:underline;
+}
+
+/* ================================
+ERROR
+================================ */
+
+.error-msg{
+margin-top:14px;
+font-size:13px;
+color:#ef4444;
+text-align:center;
+}
+
+/* ================================
+RESPONSIVE
+================================ */
+
+@media (max-width:900px){
+
+.auth-layout{
+flex-direction:column;
+height:auto;
+}
+
+.auth-left{
+display:none;
+}
+
+.auth-right{
+width:100%;
+padding:40px 20px;
+}
+
+.login-card{
+width:100%;
+max-width:420px;
+}
+
 }

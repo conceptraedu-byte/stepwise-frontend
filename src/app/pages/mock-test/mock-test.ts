@@ -75,22 +75,27 @@ export class MockTest implements OnInit, OnDestroy {
       Maths: [
         'Quadratic Equations',
         'Arithmetic Progressions',
-        'Polynomials',
         'Coordinate Geometry',
-        'Triangles',
         'Trigonometry',
         'Statistics',
+        'Real Numbers',
         'Probability',
       ],
-      Physics: [
-        'Motion',
-        'Laws of Motion',
-        'Work and Energy',
-        'Gravitation',
-        'Light – Reflection & Refraction',
-        'Electricity',
-        'Magnetic Effects of Current',
-      ],
+      Science: [
+'Chemical Reactions and Equations',
+'Acids, Bases and Salts',
+'Metals and Non-metals',
+'Carbon and its Compounds',
+'Life Processes',
+'Control and Coordination',
+'How Do Organisms Reproduce?',
+'Heredity and Evolution',
+'Light – Reflection and Refraction',
+'The Human Eye and the Colourful World',
+'Electricity',
+'Magnetic Effects of Electric Current',
+'Our Environment'
+],
     };
 
     this.chapters = chapterMap[this.subject] ?? [];
@@ -122,6 +127,7 @@ startTest(): void {
       next: (response) => {
 
         /* ================= STORE SESSION ================= */
+          console.log("START RESPONSE:", response);
 
         this.sessionId = response.session_id;
 
@@ -254,7 +260,9 @@ private resumeSession(): void {
     return this.questions[this.currentQuestionIndex];
   }
 
- selectOption(index: number): void {
+selectOption(index: number): void {
+
+  if (index === -1) return;
 
   this.selectedAnswers[this.currentQuestionIndex] = index;
 
@@ -275,17 +283,6 @@ private resumeSession(): void {
 }
 
 goNext(): void {
-
-  const questionId = this.questions[this.currentQuestionIndex].id;
-
-  this.mockService
-    .saveAnswer(
-      this.sessionId,
-      questionId,
-      this.selectedAnswers[this.currentQuestionIndex],
-      this.currentQuestionIndex
-    )
-    .subscribe();
 
   if (this.currentQuestionIndex + 1 >= this.questions.length) {
     this.finishTest();

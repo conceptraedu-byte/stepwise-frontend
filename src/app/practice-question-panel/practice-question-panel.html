@@ -1,0 +1,173 @@
+<section class="practice-shell">
+
+  <div class="practice-card">
+
+    <!-- SYSTEM BAR -->
+    <div class="practice-system-bar">
+      <span class="system-badge">AI PRACTICE LAB</span>
+      <span class="system-mode">Adaptive Question</span>
+    </div>
+
+    <!-- HEADER -->
+    <div class="practice-header">
+      <h2>Practice Challenge</h2>
+      <p class="subtext">
+        Attempt the question independently before submitting your answer.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- QUESTION AREA -->
+    <div class="question-section">
+
+      <div class="section-label">
+        Question
+      </div>
+
+      <div class="question-box">
+        {{ question }}
+      </div>
+
+    </div>
+
+    <!-- ANSWER AREA -->
+    <div class="answer-section">
+
+      <div class="section-label">
+        Your Solution
+      </div>
+
+      <textarea
+        [(ngModel)]="answerText"
+        rows="6"
+        placeholder="Write your full reasoning and steps..."
+        [disabled]="submitted">
+      </textarea>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+
+      @if (!submitted) {
+
+        <button
+          class="primary-btn"
+          (click)="submit()"
+          [disabled]="!answerText.trim()">
+
+          Submit Answer
+
+        </button>
+
+      }
+
+      @else {
+
+        <div class="submitted-state">
+          Answer submitted. Awaiting evaluation...
+        </div>
+
+      }
+
+     @if (evaluation) {
+
+<div class="evaluation-box">
+
+  <div class="evaluation-header">
+    AI Evaluation
+  </div>
+
+  <div class="score-section">
+
+    <div class="score-circle">
+      {{ evaluation.score }}/5
+    </div>
+
+    <div class="score-label">
+      Performance Score
+    </div>
+
+  </div>
+
+
+  <!-- STRENGTHS -->
+  <div class="feedback-section strengths">
+
+    <div class="feedback-title">
+      ✓ What You Did Well
+    </div>
+
+    <ul>
+      @for (s of evaluation.strengths; track $index) {
+        <li>{{ s }}</li>
+      }
+    </ul>
+
+  </div>
+
+
+  <!-- MISTAKES -->
+  <div class="feedback-section mistakes">
+
+    <div class="feedback-title">
+      ⚠ Areas to Improve
+    </div>
+
+    <ul>
+      @for (m of evaluation.mistakes; track $index) {
+        <li>{{ m }}</li>
+      }
+    </ul>
+
+  </div>
+
+
+  <!-- SOLUTION -->
+  <div class="solution-section">
+
+    <div class="solution-title">
+      Step-by-Step Correct Solution
+    </div>
+
+   <ul class="solution-steps">
+
+  @for (step of evaluation.correct_solution; track $index) {
+
+    <li>
+      <span class="step-number">{{$index + 1}}</span>
+      <span class="step-text">{{ step }}</span>
+    </li>
+
+  }
+
+</ul>
+
+  </div>
+
+</div>
+
+}
+
+@if (evaluation?.next_question) {
+
+  <div class="next-question-section">
+
+    <button
+      class="primary-btn"
+      (click)="requestNextQuestion()">
+
+      Try Next Question
+
+    </button>
+
+  </div>
+
+}
+
+    </div>
+
+  </div>
+
+</section>

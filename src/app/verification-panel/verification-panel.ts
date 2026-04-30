@@ -55,11 +55,15 @@ export class VerificationPanelComponent {
     }
   }
 
-  submit() {
-    const allAnswered = this.answers.every(a => a.trim().length > 0);
+submit() {
 
-    if (allAnswered) {
-      this.verified.emit(this.answers);
-    }
-  }
+  const allAnswered = this.answers.every(a => a.trim().length > 0);
+
+  if (!allAnswered) return;
+
+  this.isVerifying = true;   // START LOADER
+
+  this.verified.emit(this.answers);
+
+}
 }

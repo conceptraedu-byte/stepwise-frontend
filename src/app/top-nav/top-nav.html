@@ -1,62 +1,179 @@
 <nav class="top-nav">
 
-  <!-- Left: Brand -->
+  <!-- LEFT: BRAND -->
   <div class="nav-left">
-    <div class="brand">
-      <div class="logo">C</div>
-      <span class="name">Conceptra</span>
-    </div>
+  <div
+    class="brand"
+    [routerLink]="user ? '/dashboard' : '/'"
+    style="cursor: pointer"
+  >
+<img src="assets/conceptra-logo.jpeg" alt="Conceptra Logo" class="logo-img" />
+    <span class="name">Conceptra</span>
   </div>
+</div>
 
-  <!-- Center: Primary Navigation -->
+
+  <!-- CENTER NAV -->
+  @if (user) {
+
   <div class="nav-center">
-<button
-  class="nav-item"
-  routerLink="/tutor"
-  routerLinkActive="active">
-  Tutor
-</button>
-    <!-- <button class="nav-item">Practice</button>
-    <button class="nav-item">Revision</button> -->
-    <button class="nav-item" routerLink="/dashboard" routerLinkActive="active">Progress</button>
-    <button class="nav-item"  routerLink="/mock-test" routerLinkActive="active">Mock Test</button>
-    <button class="nav-item"  routerLink="/mock-history" routerLinkActive="active">Mock History</button>
 
+    <!-- HOME ONLY FOR FREE USERS -->
+    @if (plan && plan !== 'pro') {
 
+    <button
+      class="nav-item"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </button>
+
+    }
+
+    
+
+    <button
+      class="nav-item"
+      routerLink="/dashboard"
+      routerLinkActive="active">
+      Dashboard
+    </button>
+
+    <button
+      class="nav-item"
+      routerLink="/tutor"
+      routerLinkActive="active">
+      Tutor
+    </button>
+
+    <button
+      class="nav-item"
+      routerLink="/mock-test"
+      routerLinkActive="active">
+      Mock Test
+    </button>
+
+    <button
+      class="nav-item"
+      routerLink="/mock-history"
+      routerLinkActive="active">
+      Mock History
+    </button>
 
   </div>
 
-  <!-- Right: Context + User -->
-<div class="nav-right">
-
-  <!-- <div class="mode-chip">Exam Mode</div> -->
-
-  <!-- <div class="streak">
-    🔥 <strong>0</strong>
-    <span>day streak</span>
-  </div> -->
-
-  @if (!user) {
-    <button class="nav-item" routerLink="/login">
-      Login
-    </button>
   }
 
-  @if (user) {
-    <div class="user-section">
-      <span class="greeting">
-        Hi, <strong>{{ user.name }}</strong>
-      </span>
 
-      <button class="logout-btn" (click)="logout()">
-        Logout
-      </button>
-    </div>
+  <!-- PUBLIC NAV (NOT LOGGED IN) -->
+  @if (!user) {
+
+  <div class="nav-center">
+
+    <button
+      class="nav-item"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </button>
+
+    <button
+      class="nav-item"
+      routerLink="/about"
+      routerLinkActive="active">
+      About
+    </button>
+
+  </div>
+
+  }
+
+
+  <!-- RIGHT SIDE -->
+  <div class="nav-right">
+
+    <!-- VISITOR BUTTONS -->
+    @if (!user) {
+
+    <button
+      class="nav-item"
+      routerLink="/login">
+      Login
+    </button>
+
+    <button
+      class="nav-item"
+      routerLink="/register">
+      Start Free
+    </button>
+
+    }
+
+
+    <!-- LOGGED USER -->
+    @if (user) {
+
+    <button
+      class="nav-item"
+      routerLink="/about"
+      routerLinkActive="active">
+      About
+    </button>
+
+    <div class="user-section">
+
+      <!-- PLAN + CREDITS -->
+      @if (creditsRemaining !== null) {
+
+    <div class="credit-section">
+
+  <span class="plan-indicator">
+    {{ plan | titlecase }} • {{ creditsRemaining }} credits
+  </span>
+
+  @if (creditsRemaining <=5 )
+{
+  <button
+    class="buy-credits-btn"
+    (click)="buyExtraCredits()">
+    Buy 30 Credits
+  </button>
+
   }
 
 </div>
 
+      @if (lowCreditWarning) {
+      <span class="credit-warning">
+        ⚠ Only {{ creditsRemaining }} credits left
+      </span>
+      }
 
+      }
 
+      <span class="greeting">
+        Hi, <strong>{{ user.name }}</strong>
+      </span>
+
+      <button
+        class="logout-btn"
+        (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+    }
+
+  </div>
 
 </nav>
+
+@if (successMessage) {
+  <div class="success-box">
+    {{ successMessage }}
+  </div>
+}
+

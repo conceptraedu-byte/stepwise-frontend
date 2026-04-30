@@ -39,6 +39,12 @@
   cursor: pointer;
 }
 
+.logo-img {
+  height: 45px;   /* adjust between 32–40 */
+  width: auto;
+  object-fit: contain;
+}
+
 .logo {
   width: 42px;
   height: 42px;
@@ -229,6 +235,56 @@
   color: #ffffff;
 }
 
+
+.credit-warning {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.buy-credits-btn {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.buy-credits-btn:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+/* active click */
+.buy-credits-btn:active {
+  transform: translateY(0);
+}
+
+/* focus accessibility */
+.buy-credits-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.35);
+}
+
+.success-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
 /* =========================================================
    RESPONSIVE
    ========================================================= */

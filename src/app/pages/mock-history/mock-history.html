@@ -1,71 +1,252 @@
 <div class="history-wrapper">
 
+  <!-- ========================================= -->
+  <!-- HEADER -->
+  <!-- ========================================= -->
+
   <div class="history-header">
-    <h1>Mock Test History</h1>
-    <p>Track your performance and improvement over time</p>
+
+    <div class="header-left">
+      <h1>Mock Test History</h1>
+      <p>Track your performance and improvement over time</p>
+    </div>
+
   </div>
 
+
+  <!-- ========================================= -->
+  <!-- LOADING STATE -->
+  <!-- ========================================= -->
+
   @if (isLoading) {
+
     <div class="loading-state">
       <div class="loader"></div>
       <p>Loading your history...</p>
     </div>
+
   }
 
   @else {
 
+    <!-- ========================================= -->
+    <!-- EMPTY STATE -->
+    <!-- ========================================= -->
+
     @if (history.length === 0) {
+
       <div class="empty-state">
+
+        <div class="empty-icon">📊</div>
+
         <h3>No Tests Attempted Yet</h3>
-        <p>Start your first mock test to see performance analytics.</p>
+
+        <p>
+          Start your first mock test to build performance insights.
+        </p>
+
       </div>
+
     }
 
     @else {
 
+      <!-- ========================================= -->
+      <!-- ACCURACY TREND -->
+      <!-- ========================================= -->
+
+
+      <div class="analytics-cards">
+
+  <div class="analytics-card">
+    <span class="label">Last Test</span>
+    <span class="value">{{ lastAccuracy }}%</span>
+  </div>
+
+  <div class="analytics-card">
+    <span class="label">Average Accuracy</span>
+    <span class="value">{{ averageAccuracy }}%</span>
+  </div>
+
+  <div class="analytics-card">
+    <span class="label">Best Score</span>
+    <span class="value">{{ bestAccuracy }}%</span>
+  </div>
+
+
+  <div class="analytics-card streak">
+  <span class="label">Study Streak</span>
+  <span class="value">🔥 {{ streakDays }} days</span>
+</div>
+
+<div class="analytics-card">
+  <span class="label">Total Tests</span>
+  <span class="value">{{ totalTests }}</span>
+</div>
+
+<div class="analytics-card improvement">
+
+  <span class="label">Improvement</span>
+
+  <span class="value">
+
+    @if (improvement >= 0) {
+      ▲ +{{ improvement }}%
+    }
+
+    @else {
+      ▼ {{ improvement }}%
+    }
+
+  </span>
+
+</div>
+
+</div>
+
+      <div class="trend-section">
+
+        <div class="trend-header">
+          <h2>Accuracy Trend</h2>
+          <span class="trend-caption">
+            Last {{ accuracyHistory.length }} Tests
+          </span>
+        </div>
+
+        <div class="trend-chart">
+
+          @for (acc of accuracyHistory; let i = $index; track i) {
+
+            <div class="bar-wrap">
+
+              <div class="trend-bar"
+                   [style.height.%]="getBarHeight(acc)"
+                   [attr.data-val]="acc + '%'"
+
+                   [class.bar-low]="acc < 50"
+                   [class.bar-mid]="acc >= 50 && acc < 75"
+                   [class.bar-high]="acc >= 75">
+
+              </div>
+
+              <div class="bar-label">
+                T-{{ accuracyHistory.length - i }}
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================================= -->
+      <!-- HISTORY GRID -->
+      <!-- ========================================= -->
+
       <div class="history-grid">
 
-        @for (item of history; track item.session_id) {
+        @for (item of history; let i = $index; track item.session_id) {
 
-          <div class="history-card">
+          <div class="history-card"
+               [ngClass]="getAccuracyClass(item.accuracy)">
+
+            <!-- =============================== -->
+            <!-- CARD HEADER -->
+            <!-- =============================== -->
 
             <div class="card-top">
-              <div>
+
+              <div class="test-meta">
+
+                <div class="test-number">
+                  Test #{{ history.length - i }}
+                </div>
+
                 <div class="subject">
                   {{ item.subject }} · Class {{ item.class_level }}
                 </div>
+
                 <div class="chapter" *ngIf="item.chapter">
                   {{ item.chapter }}
                 </div>
+
               </div>
 
-              <div class="date">
-                {{ item.completed_at * 1000 | date:'medium' }}
+              <div class="test-date">
+                {{ item.completed_at * 1000 | date:'mediumDate' }}
               </div>
+
             </div>
+
+
+            <!-- =============================== -->
+            <!-- PERFORMANCE -->
+            <!-- =============================== -->
 
             <div class="card-body">
 
-              <div class="score-block">
+              <div class="score-section">
+
                 <div class="score-main">
                   {{ item.score }} / {{ item.total }}
                 </div>
-                <div class="score-sub">
-                  Questions Correct
+
+                <div class="score-label">
+                  Correct Answers
                 </div>
+
               </div>
 
-              <div class="accuracy-block"
+
+              <div class="accuracy-section"
                    [ngClass]="getAccuracyClass(item.accuracy)">
-                {{ item.accuracy }}%
+
+                <div class="accuracy-value">
+                  {{ item.accuracy }}%
+                </div>
+
+                <div class="accuracy-label">
+                  Accuracy
+                </div>
+
               </div>
 
             </div>
 
-            <div class="progress-bar">
-              <div class="progress-fill"
-                   [style.width.%]="item.accuracy">
+
+            <!-- =============================== -->
+            <!-- PROGRESS -->
+            <!-- =============================== -->
+
+            <div class="progress-wrapper">
+
+              <div class="progress-bar">
+
+                <div class="progress-fill"
+                     [style.width.%]="item.accuracy">
+                </div>
+
               </div>
+
+              <div class="progress-caption">
+
+                @if (item.accuracy >= 75) {
+                  Strong performance
+                }
+
+                @else if (item.accuracy >= 50) {
+                  Moderate performance
+                }
+
+                @else {
+                  Needs improvement
+                }
+
+              </div>
+
             </div>
 
           </div>

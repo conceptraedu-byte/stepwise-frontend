@@ -1,239 +1,508 @@
-<!-- ===================================================== -->
+<!-- ============================================ -->
+<!-- PREMIUM AI TUTOR CHAT - NEXT-GEN UI -->
+<!-- ============================================ -->
+
 <!-- PRACTICE MODE -->
-<!-- ===================================================== -->
-@if (practiceMode) {
+@if (uiMode === 'practice') {
 
-  <div class="practice-container">
+<div class="practice-viewport" role="main" aria-label="Practice mode">
 
-    <!-- ================= QUESTION CARD ================= -->
-    <div class="question-card">
-      <div class="question-header">
-        <span class="question-label">Practice Question</span>
-      </div>
-      <p class="question-text">
-        {{ practiceQuestion }}
-      </p>
+  <!-- BACKGROUND ATMOSPHERE -->
+  <div class="atmosphere" aria-hidden="true">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="practice-header">
+    <div class="header-badge" role="status">
+      <span class="badge-icon">📋</span>
+      <span class="badge-text">Practice Session</span>
     </div>
+  </header>
 
-    <!-- ================= ANSWER SECTION ================= -->
-    <div class="answer-card">
+  <!-- MAIN CONTENT -->
+  <main class="practice-content">
+    
+    <!-- QUESTION SECTION -->
+    <section class="question-section" aria-label="Question">
+      <h2 class="section-heading">
+        <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Question</span>
+      </h2>
+      
+      <div class="question-card premium-card">
+        <p class="question-text">{{ practiceQuestion }}</p>
+        <div class="card-accent"></div>
+      </div>
+    </section>
 
-      <label>Your Answer</label>
+    <!-- ANSWER SECTION -->
+    <section class="answer-section" aria-label="Your Answer">
+      <div class="section-header">
+        <h2 class="section-heading">
+          <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <span>Your Answer</span>
+        </h2>
+        <div class="char-counter" aria-live="polite">
+          {{ practiceAnswer.length }}/1000
+        </div>
+      </div>
 
       <textarea
         [(ngModel)]="practiceAnswer"
-        rows="6"
-        placeholder="Write your solution clearly and step-by-step...">
-      </textarea>
+        placeholder="Write your detailed answer here... (max 1000 characters)"
+        class="premium-textarea"
+        rows="8"
+        maxlength="1000"
+        [disabled]="isEvaluating"
+        aria-label="Practice answer input"
+      
+      ></textarea>
 
-      <button
-        class="primary-btn"
-        (click)="submitPracticeAnswer()"
-        [disabled]="!practiceAnswer.trim() || isEvaluating">
+      @if (getLongTextWarning(practiceAnswer)) {
+      <div class="warning-text" id="word-warning">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M12 9v2m0 4v2m1.618-9.408l1.414-1.414m2.27 2.27l1.414-1.414M6.382 9.592L4.968 8.178m2.27 2.27L4.968 11.018" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Long answer detected</span>
+      </div>
+      }
 
-        @if (!isEvaluating) {
-          Submit Answer
-        } @else {
-          <span class="loader-container">
-            <span class="spinner"></span>
-            Evaluating...
-          </span>
-        }
+      <div class="answer-actions">
+        <button 
+          class="btn-submit premium"
+          (click)="submitPracticeAnswer()"
+          [disabled]="!practiceAnswer.trim() || isEvaluating"
+          [class.loading]="isEvaluating"
+          aria-busy="isEvaluating"
+          [attr.aria-label]="isEvaluating ? 'Evaluating answer' : 'Submit answer'">
+          
+          @if (!isEvaluating) {
+            <span class="btn-content">
+              <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+                <path d="M13 5l7 7m0 0l-7 7m7-7H6" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+              <span>Submit Answer</span>
+            </span>
+          } @else {
+            <span class="btn-content">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Evaluating...</span>
+            </span>
+          }
+        </button>
+      </div>
+    </section>
 
-      </button>
+  </main>
+
+  <!-- EVALUATION LOADER -->
+  @if (isEvaluating) {
+  <div class="evaluation-overlay" role="status" aria-label="Evaluating answer" aria-hidden="true">
+    <div class="loader-container">
+      <div class="loader-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="loader-text">
+        <p class="loader-title">Analyzing Your Answer</p>
+        <p class="loader-subtitle">AI is checking your understanding...</p>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- FEEDBACK SECTION -->
+  @if (uiMode === 'practice' && !isEvaluating && practiceScore !== null) {
+  
+  <section class="feedback-section" aria-label="Evaluation feedback">
+    
+    <!-- SCORE CARD -->
+    <div class="score-card premium-card">
+      <div class="score-display" [ngClass]="scoreClass" role="status">
+        <div class="score-ring" aria-label="Score visualization">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="50" class="ring-bg"/>
+            <circle 
+              cx="60" cy="60" r="50" 
+              class="ring-progress"
+              [style.strokeDasharray]="'314 * ' + (scorePercentage / 100) + ', 314'"
+            />
+          </svg>
+          <div class="score-value" aria-live="polite">{{ practiceScore }}</div>
+        </div>
+
+        <div class="score-meta">
+          <div class="meta-row">
+            <span class="meta-label">Attempt</span>
+            <span class="meta-value" aria-label="Attempt number">{{ practiceAttempts }}</span>
+          </div>
+          <div class="progress-mini" role="progressbar" [attr.aria-valuenow]="scorePercentage" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" [style.width.%]="scorePercentage"></div>
+          </div>
+          <div class="percentage" aria-label="Score percentage">{{ scorePercentage | number:'1.0-0' }}%</div>
+        </div>
+      </div>
+
+      <!-- DELTA BADGE -->
+      @if (scoreDelta !== null) {
+      <div class="delta-badge" [ngClass]="{ positive: scoreDelta > 0, negative: scoreDelta < 0 }" role="status">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          @if (scoreDelta > 0) {
+            <path d="M13 5l7 7m0 0l-7 7m7-7H6" stroke="currentColor" stroke-width="2" fill="none"/>
+          } @else {
+            <path d="M13 19l7-7m0 0l-7-7m7 7H6" stroke="currentColor" stroke-width="2" fill="none"/>
+          }
+        </svg>
+        <span aria-label="Score change">{{ scoreDelta > 0 ? '+' : '' }}{{ scoreDelta }}</span>
+      </div>
+      }
+    </div>
+
+    <!-- WEAKNESS TAGS -->
+    @if (weaknessTags.length > 0) {
+    <div class="weakness-container" role="region" aria-label="Areas for improvement">
+      @for (tag of weaknessTags; track $index) {
+        <div class="badge-warning">
+          <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+            <path d="M12 9v2m0 4v2m1.618-9.408l1.414-1.414m2.27 2.27l1.414-1.414M6.382 9.592L4.968 8.178m2.27 2.27L4.968 11.018" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <span>{{ tag }}</span>
+        </div>
+      }
+    </div>
+    }
+
+    <!-- FEEDBACK GRID -->
+    <div class="feedback-grid">
+      
+      <!-- STRENGTHS -->
+      @if (practiceStrengths.length > 0) {
+      <article class="feedback-card strengths-card">
+        <header class="card-header">
+          <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <h3>Strengths</h3>
+        </header>
+        <ul class="feedback-list" role="list">
+          @for (strength of practiceStrengths; track $index) {
+            <li role="listitem">{{ strength }}</li>
+          }
+        </ul>
+      </article>
+      }
+
+      <!-- MISSING CONCEPTS -->
+      @if (practiceMissing.length > 0) {
+      <article class="feedback-card missing-card">
+        <header class="card-header">
+          <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <h3>Gap Analysis</h3>
+        </header>
+        <ul class="feedback-list" role="list">
+          @for (concept of practiceMissing; track $index) {
+            <li role="listitem">{{ concept }}</li>
+          }
+        </ul>
+      </article>
+      }
 
     </div>
 
-    <!-- ================= EVALUATING STATE ================= -->
-    @if (isEvaluating) {
-      <div class="feedback-card loading">
-        <div class="spinner large"></div>
-        <div>
-          <strong>Evaluating Answer</strong>
-          <p>Analyzing conceptual clarity, structure, and board accuracy...</p>
-        </div>
-      </div>
+    <!-- IMPROVEMENT ADVICE -->
+    @if (practiceAdvice) {
+    <article class="advice-card">
+      <header class="card-header">
+        <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+          <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <h3>Improvement Path</h3>
+      </header>
+      <p class="advice-text">{{ practiceAdvice }}</p>
+    </article>
     }
 
-    <!-- ================= STRUCTURED FEEDBACK ================= -->
-    @if (!isEvaluating && practiceScore !== null) {
-
-      <div class="feedback-card structured">
-
-        <!-- SCORE SECTION -->
-        <div class="score-wrapper">
-
-          <div class="score-header">
-
-            <div class="score-badge" [ngClass]="scoreClass">
-              Score: {{ practiceScore }}
-
-              @if (scoreDelta !== null) {
-                <span
-                  class="score-delta"
-                  [ngClass]="{
-                    'delta-up': scoreDelta > 0,
-                    'delta-down': scoreDelta < 0
-                  }">
-                  {{ scoreDelta > 0 ? '+' : '' }}{{ scoreDelta }}
-                </span>
-              }
-
-            </div>
-
-            <div class="attempt-counter">
-              Attempt {{ practiceAttempts }}
-            </div>
-
-          </div>
-
-          <!-- Progress Bar -->
-          <div class="score-progress">
-            <div
-              class="score-progress-fill"
-              [style.width.%]="scorePercentage">
-            </div>
-          </div>
-
-        </div>
-
-        <!-- WEAKNESS TAGS -->
-        @if (weaknessTags.length > 0) {
-          <div class="weakness-tags">
-            @for (tag of weaknessTags; track $index) {
-              <span class="weakness-chip">{{ tag }}</span>
-            }
-          </div>
-        }
-
-        <!-- STRENGTHS -->
-        @if (practiceStrengths.length > 0) {
-          <div class="feedback-section strengths">
-            <h4>Strengths</h4>
-            <ul>
-              @for (item of practiceStrengths; track $index) {
-                <li>{{ item }}</li>
-              }
-            </ul>
-          </div>
-        }
-
-        <!-- MISSING CONCEPTS -->
-        @if (practiceMissing.length > 0) {
-          <div class="feedback-section missing">
-            <h4>Missing Concepts</h4>
-            <ul>
-              @for (item of practiceMissing; track $index) {
-                <li>{{ item }}</li>
-              }
-            </ul>
-          </div>
-        }
-
-        <!-- IMPROVEMENT ADVICE -->
-        @if (practiceAdvice) {
-          <div class="feedback-section advice">
-            <h4>Improvement Advice</h4>
-            <p>{{ practiceAdvice }}</p>
-          </div>
-        }
-
-        <!-- IDEAL ANSWER -->
-        @if (practiceIdeal) {
-          <div class="feedback-section ideal">
-            <h4>Ideal Full-Mark Answer</h4>
-           <div class="ideal-box" [innerHTML]="formattedIdealAnswer"></div>
-          </div>
-        }
-
-        <!-- ATTEMPT HISTORY -->
-        @if (attemptHistory.length > 1) {
-          <div class="attempt-history">
-            <h4>Attempt History</h4>
-            <div class="history-list">
-              @for (attempt of attemptHistory; track $index) {
-                <div class="history-item">
-                  Attempt {{ $index + 1 }} — {{ attempt }}
-                </div>
-              }
-            </div>
-          </div>
-        }
-
-        <!-- REFINEMENT CONTROLS -->
-        <div class="refinement-controls">
-          <button class="secondary-btn" (click)="prepareRefinement()">
-            Rewrite Answer (Attempt {{ practiceAttempts + 1 }})
-          </button>
-
-          <button class="ghost-btn" (click)="resetPractice()">
-            Try New Question
-          </button>
-        </div>
-
-      </div>
+    <!-- IDEAL ANSWER -->
+    @if (practiceIdeal) {
+    <article class="ideal-card">
+      <header class="card-header">
+        <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+          <path d="M9 12l2 2 4-4M7 20H5a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v5m3-4l-4 4m0 0l4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <h3>Full-Mark Answer</h3>
+      </header>
+      <div class="ideal-content" [innerHTML]="formattedIdealAnswer"></div>
+    </article>
     }
 
-  </div>
+    <!-- ATTEMPT HISTORY -->
+    @if (attemptHistory.length > 1) {
+    <article class="history-card">
+      <header class="card-header">
+        <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+          <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <h3>Progress</h3>
+      </header>
+      <div class="history-timeline" role="list">
+        @for (attempt of attemptHistory; track $index) {
+          <div class="timeline-item" [class.latest]="$index === attemptHistory.length - 1" role="listitem">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label">Attempt {{ $index + 1 }}</span>
+            <span class="timeline-score">{{ attempt }}</span>
+          </div>
+        }
+      </div>
+    </article>
+    }
+
+    <!-- CONTROL BUTTONS -->
+    <div class="control-buttons">
+      <button class="btn-secondary" (click)="prepareRefinement()">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <span>Rewrite (Attempt {{ practiceAttempts + 1 }})</span>
+      </button>
+      <button class="btn-tertiary" (click)="resetPractice()">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <span>New Question</span>
+      </button>
+    </div>
+
+  </section>
+  }
+
+</div>
 
 }
 
-<!-- ===================================================== -->
 <!-- CHAT MODE -->
-<!-- ===================================================== -->
 @else {
 
-  <div class="chat-container">
+<div class="chat-viewport" role="main" aria-label="Chat interface">
 
-    <!-- ================= MESSAGES ================= -->
-    <div class="chat-messages">
-
-      @for (msg of messages; track $index) {
-
-        <div
-          class="message"
-          [class.user]="msg.role === 'user'"
-          [class.bot]="msg.role === 'bot'">
-
-          <div class="bubble">
-            {{ msg.text }}
-          </div>
-
-        </div>
-
-      }
-
-      <!-- AI TYPING INDICATOR -->
-      @if (isBotTyping) {
-        <div class="message bot">
-          <div class="bubble typing">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-        </div>
-      }
-
+  <!-- BACKGROUND ATMOSPHERE -->
+  <div class="chat-atmosphere" aria-hidden="true">
+    <div class="gradient-mesh">
+      <div class="gradient-blob blob-1"></div>
+      <div class="gradient-blob blob-2"></div>
+      <div class="gradient-blob blob-3"></div>
     </div>
-
-    <!-- ================= INPUT BAR ================= -->
-    <div class="chat-input">
-
-      <input
-        #userInput
-        type="text"
-        placeholder="Ask your question..."
-        (keyup.enter)="sendUserMessage(userInput.value); userInput.value='';"
-      />
-
-      <button
-        type="button"
-        (click)="sendUserMessage(userInput.value); userInput.value='';">
-        ➤
-      </button>
-
-    </div>
-
   </div>
+
+  <!-- MESSAGES CONTAINER -->
+  <section class="messages-section" aria-label="Chat messages" role="log" aria-live="polite" aria-atomic="false">
+    <div 
+      class="chat-messages" 
+      #chatBody 
+      role="region"
+      (scroll)="onChatScroll($event)"
+      [attr.aria-label]="messages.length > 0 ? 'Chat history with ' + messages.length + ' messages' : 'Empty chat'">
+
+      @if (messages.length === 0 && showEmptyState) {
+      <div class="empty-state" role="status">
+        <div class="empty-icon">💭</div>
+        <h2 class="empty-title">Start Your Learning Journey</h2>
+        <p class="empty-subtitle">Ask me anything about math, science, or try a practice question</p>
+      </div>
+      }
+
+      @for (msg of messages; track msg.id) {
+      
+      <!-- MESSAGE BUBBLE -->
+      <div class="message-wrapper" [class.user-msg]="msg.role === 'user'" [class.bot-msg]="msg.role === 'bot'">
+        
+        <!-- USER MESSAGE -->
+        @if (msg.role === 'user') {
+        <div class="message-bubble user-bubble" role="article" [attr.aria-label]="'Your message: ' + msg.text">
+          <div class="bubble-content" [innerHTML]="msg.text"></div>
+          <time class="message-time" [title]="msg.timestamp | date:'medium'"></time>
+        </div>
+        }
+
+        <!-- BOT MESSAGE - CONCEPT -->
+        @else if (msg.type === 'concept') {
+        <div class="message-bubble concept-bubble" role="article" aria-label="Concept explanation">
+          <div class="concept-header">
+            <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+              <path d="M12 6.253v13m0-13C6.5 6.253 2 10.753 2 16.5 2 22.299 6.5 25 12 25s10-2.701 10-8.5c0-5.747-4.5-10.247-10-10.247z" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            <span class="concept-badge">Concept</span>
+          </div>
+          <div class="concept-body" [innerHTML]="msg.text"></div>
+          <div class="concept-glow" aria-hidden="true"></div>
+        </div>
+        }
+
+        <!-- BOT MESSAGE - TEXT -->
+        @else {
+        <div class="message-bubble bot-bubble" role="article" aria-label="Tutor response">
+          <div class="bubble-content" [innerHTML]="formatTutorResponse(msg.text)"></div>
+          <time class="message-time" [title]="msg.timestamp | date:'medium'"></time>
+
+          <!-- MCQ OPTIONS -->
+          @if (msg.input_mode === 'mcq' && msg.options && msg.options.length > 0) {
+          <div class="mcq-container" role="group" aria-label="Multiple choice options">
+            @for (opt of msg.options; track $index) {
+            <button class="mcq-btn" (click)="sendUserMessage(opt)" [attr.aria-label]="'Option ' + ($index + 1) + ': ' + opt">
+              <span class="mcq-text">{{ opt }}</span>
+              <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+                <path d="M13 5l7 7m0 0l-7 7m7-7H6" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+            </button>
+            }
+          </div>
+          }
+        </div>
+        }
+
+      </div>
+
+      }
+
+      <!-- TYPING INDICATOR -->
+      @if (isBotTyping) {
+      <div class="message-wrapper bot-msg">
+        <div class="message-bubble bot-bubble typing-bubble" role="status" aria-label="Coceptra is typing">
+          <div class="typing-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <span class="sr-only">{{ getLoadingMessage() }}</span>
+        </div>
+      </div>
+      }
+
+    </div>
+  </section>
+
+  <!-- GUIDED PANEL -->
+  @if (guidedMode) {
+  <section class="guided-panel" role="region" aria-label="Guided problem solving">
+    <header class="guided-header">
+      <svg viewBox="0 0 24 24" class="icon-md" aria-hidden="true">
+        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+      <div class="header-text">
+        <h3>Work Through the Problem</h3>
+        <p>Show your reasoning step-by-step</p>
+      </div>
+    </header>
+
+    <textarea
+      [(ngModel)]="attemptText"
+      placeholder="Explain your thinking..."
+      class="guided-textarea"
+      rows="4"
+      [disabled]="isBotTyping"
+      aria-label="Your problem-solving attempt"
+    ></textarea>
+
+    <div class="guided-buttons">
+      <button 
+        class="btn-primary"
+        (click)="submitAttempt()"
+        [disabled]="!attemptText.trim() || isBotTyping">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <span>Submit</span>
+      </button>
+      <button class="btn-secondary" (click)="requestHint()">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <span>Hint</span>
+      </button>
+      <button class="btn-secondary" (click)="requestSolution()" [disabled]="!solutionUnlocked">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        <span>Solution</span>
+      </button>
+    </div>
+  </section>
+  }
+
+  <!-- INPUT AREA -->
+  <footer class="input-footer" [class.disabled]="isBotTyping">
+    <div class="input-wrapper">
+      <div class="input-container">
+        <div class="mode-toggle">
+  <button 
+    [class.active]="interactionMode === 'learn'"
+    (click)="switchMode('learn')">
+    Learn
+  </button>
+
+  <button 
+    [class.active]="interactionMode === 'problems'"
+    (click)="switchMode('problems')">
+    Solve
+  </button>
+</div>
+
+        <input
+          #inputField
+          type="text"
+          placeholder="Ask your Question..."
+          class="input-field"
+          (keyup.enter)="sendUserMessage(inputField.value); inputField.value='';"
+          [disabled]="isBotTyping"
+          aria-label="Message input"
+          maxlength="5000"
+        />
+        <button
+          class="send-btn"
+          (click)="sendUserMessage(inputField.value); inputField.value='';"
+          [disabled]="isBotTyping"
+          [attr.aria-label]="isBotTyping ? 'Waiting for response' : 'Send message'"
+          [attr.aria-busy]="isBotTyping"
+        >
+          @if (!isBotTyping) {
+            <svg viewBox="0 0 24 24" class="icon-sm" aria-hidden="true">
+              <path d="M13 5l7 7m0 0l-7 7m7-7H6" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          } @else {
+            <span class="spinner" aria-hidden="true"></span>
+          }
+        </button>
+      </div>
+
+      @if (inputError) {
+      <div class="input-error" role="alert">
+        <svg viewBox="0 0 24 24" class="icon-xs" aria-hidden="true">
+          <path d="M12 9v2m0 4v2m1.618-9.408l1.414-1.414m2.27 2.27l1.414-1.414M6.382 9.592L4.968 8.178m2.27 2.27L4.968 11.018" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>{{ inputError }}</span>
+      </div>
+      }
+
+      <p class="input-hint" aria-live="polite">
+        @if (!isBotTyping) { 
+          <span>Press Enter to send</span> 
+        } @else { 
+          <span>{{ getLoadingMessage() }}</span>
+        }
+      </p>
+    </div>
+  </footer>
+
+</div>
 
 }

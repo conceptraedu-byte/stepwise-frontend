@@ -106,6 +106,7 @@ saveAnswer(
   questionId: string,
   selectedOption: number,
   currentIndex: number
+  
 ): Observable<any> {
 
   const token = localStorage.getItem('token');
