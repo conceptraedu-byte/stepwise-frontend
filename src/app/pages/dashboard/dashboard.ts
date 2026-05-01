@@ -90,7 +90,7 @@ export class Dashboard implements OnInit {
   /* ─────────────────────────────────────────────
      CONFIGURATION
   ───────────────────────────────────────────── */
-  private readonly baseUrl = 'http://localhost:8000';
+  private readonly baseUrl = 'https://stepwise-backend-1.onrender.com';
   private readonly CIRCUMFERENCE = 314; // 2πr where r=50
 
   constructor(private http: HttpClient, private router: Router) {}
