@@ -9,6 +9,7 @@ import { BillingService } from './billing.service';
 export class AuthService {
 
   private baseUrl = 'https://stepwise-backend-1.onrender.com';
+  
 
   private userSubject = new BehaviorSubject<any>(this.getStoredUser());
   user$ = this.userSubject.asObservable();

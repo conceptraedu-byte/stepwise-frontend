@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 /* =========================
    RESPONSE TYPE (IMPORTANT)
@@ -17,8 +18,7 @@ export interface ChatResponse {
 })
 export class ChatService {
 
-private BASE_URL = 'https://stepwise-backend-1.onrender.com';
-
+private BASE_URL = environment.apiUrl;
 private API_URL = `${this.BASE_URL}/chat`;
 private LEARN_URL = `${this.BASE_URL}/learn`;
 private STREAM_URL = `${this.BASE_URL}/chat/stream`;
