@@ -17,10 +17,12 @@ export interface ChatResponse {
 })
 export class ChatService {
 
-  private API_URL = 'http://localhost:8000/chat';
-  private LEARN_URL = 'http://localhost:8000/learn';
-  private STREAM_URL = 'http://localhost:8000/chat/stream';
-  private RESET_URL = 'http://localhost:8000/chat/reset';
+private BASE_URL = 'https://stepwise-backend-1.onrender.com';
+
+private API_URL = `${this.BASE_URL}/chat`;
+private LEARN_URL = `${this.BASE_URL}/learn`;
+private STREAM_URL = `${this.BASE_URL}/chat/stream`;
+private RESET_URL = `${this.BASE_URL}/chat/reset`;
 
   private abortController: AbortController | null = null;
 
@@ -188,21 +190,25 @@ export class ChatService {
   /* =========================
      PRACTICE
   ========================= */
+
   generatePracticeQuestion(topic: string, confidence: number) {
-    return this.http.post<any>(
-      'http://localhost:8000/practice/generate',
-      {
-        topic,
-        confidence
-      }
-    );
-  }
+  return this.http.post<any>(
+    `${this.BASE_URL}/practice/generate`,
+    {
+      topic,
+      confidence
+    }
+  );
+}
 
 problemsMessage(message: string, board: string) {
-  return this.http.post<ChatResponse>('http://localhost:8000/problems', {
-    message,
-    board
-  });
+  return this.http.post<ChatResponse>(
+    `${this.BASE_URL}/problems`,
+    {
+      message,
+      board
+    }
+  );
 }
 
   evaluatePractice(
@@ -212,7 +218,7 @@ problemsMessage(message: string, board: string) {
     solutionSteps: string[]
   ) {
     return this.http.post<any>(
-      'http://localhost:8000/practice/evaluate',
+      '`${this.BASE_URL}/practice/evaluate`',
       {
         question,
         correct_answer: correctAnswer,

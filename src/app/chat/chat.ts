@@ -35,8 +35,7 @@ export class ChatComponent {
  
 
   // streaming
-  STREAM_API_URL = 'http://localhost:8000/chat/stream';
-  private abortController: AbortController | null = null;
+STREAM_API_URL = 'https://stepwise-backend-1.onrender.com/chat/stream';  private abortController: AbortController | null = null;
 
   // typing illusion
   private typingQueue = '';

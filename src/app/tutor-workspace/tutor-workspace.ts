@@ -119,15 +119,20 @@ ngOnInit() {
 
 }
 
+private BASE_URL = 'https://stepwise-backend-1.onrender.com';
+
 loadQuestionForTopic(topic: string) {
-
-  this.http.get(`http://localhost:8000/practice/question?topic=${topic}`)
-    .subscribe((res:any) => {
-
+  this.http.get<any>(
+    `${this.BASE_URL}/practice/question`,
+    { params: { topic } }
+  ).subscribe({
+    next: (res) => {
       this.currentQuestion = res.question;
-
-    });
-
+    },
+    error: (err) => {
+      console.error('Failed to load question', err);
+    }
+  });
 }
 
   /* ======================================================

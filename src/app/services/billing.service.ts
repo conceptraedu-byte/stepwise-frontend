@@ -16,7 +16,7 @@ export interface BillingPlan {
 })
 export class BillingService {
 
-  private API = 'http://localhost:8000';
+  private API = 'https://stepwise-backend-1.onrender.com';
 
   constructor(private http: HttpClient) {}
 
@@ -51,16 +51,18 @@ verifyPayment(data:any) {
   );
 }
 
+private BASE_URL = 'https://stepwise-backend-1.onrender.com';
+
 createExtraCreditsOrder() {
   return this.http.post(
-    "http://localhost:8000/billing/create-extra-credits-order",
+    `${this.BASE_URL}/billing/create-extra-credits-order`,
     {}
   );
 }
 
 verifyExtraCredits(data: any) {
   return this.http.post(
-    "http://localhost:8000/billing/verify-extra-credits",
+    `${this.BASE_URL}/billing/verify-extra-credits`,
     data
   );
 }
