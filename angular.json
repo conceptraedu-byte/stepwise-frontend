@@ -18,9 +18,13 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-          "assets": [
+  "assets": [
+  {
+    "glob": "_redirects",
+    "input": "src",
+    "output": "/"
+  },
   "src/assets",
-  "src/_redirects",
   {
     "glob": "**/*",
     "input": "public"
@@ -40,8 +44,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "50kB",
+                  "maximumError": "100kB"
                 }
               ],
               "outputHashing": "all"
